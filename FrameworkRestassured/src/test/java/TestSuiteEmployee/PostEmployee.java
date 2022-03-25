@@ -37,7 +37,7 @@ public class PostEmployee extends BaseClass {
 		Map<String, String> headers = new Hashtable<>();
 		String json = GetEmployeeToJson();
 		System.out.println(json);
-		
+		//Call the post request
 		Response response = RestAPiHelper.PostRequest("users", headers, json);
 		
 		EmployeeData data = GetJsonToEmployee(response.asString());
