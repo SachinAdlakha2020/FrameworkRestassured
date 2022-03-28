@@ -88,9 +88,7 @@ public static Response PostRequestAsObject(String UriPath , Map<String,String> h
 		.body(object)
 		.when()
 		.post(new URI(Url));
-		
-		
-		
+					
 		System.out.println(response.asString());
 		System.out.println(response.statusCode());
 		return response;
