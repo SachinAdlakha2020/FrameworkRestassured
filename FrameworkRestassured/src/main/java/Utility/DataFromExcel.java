@@ -35,7 +35,7 @@ public class DataFromExcel {
 		Iterator<Row> rows = sheet.iterator();
 		r1 = 0;
 		c1 = 0;
-		FormulaEvaluator formulaEvaluator = workBook.getCreationHelper().createFormulaEvaluator();
+		//FormulaEvaluator formulaEvaluator = workBook.getCreationHelper().createFormulaEvaluator();
 		while (rows.hasNext()) {
 			Row row = rows.next();
 			System.out.println("Print the rownum: " + row.getRowNum());
@@ -48,8 +48,9 @@ public class DataFromExcel {
 				System.out.println(value.getCellType());
 				switch (value.getCellType()) {
 				case STRING:
-					System.out.println(value.getStringCellValue());
+					System.out.println("Reading from excel: " + value.getStringCellValue());
 					data[r1][c1] = value.getStringCellValue();
+					System.out.println("Writing data to object: " + data[r1][c1].toString());
 					break;
 				case NUMERIC:
 					System.out.println(value.getNumericCellValue());
