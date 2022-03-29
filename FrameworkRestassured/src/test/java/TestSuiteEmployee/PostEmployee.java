@@ -74,13 +74,13 @@ public class PostEmployee extends BaseClass {
 		EmployeeData outputData=null;
 		for (int i = 0; i < inputDataRowsCount; i++) {
 			String jsonRequestData = GetEmployeeToJson(inputDataList.get(i));
+			System.out.println("Json Request: "  + jsonRequestData);
 			Response responseData = RestAPiHelper.PostRequest("users", headers, jsonRequestData);
 			outputData = GetJsonToEmployee(responseData.asString());
 			outputDataList.add(outputData);
-		}
+		}		
 		
-		//WriteOutput(inputDataList.get(0), outputDataList.get(0));
-		WriteOutputMultiline(inputDataList,outputDataList);
+		WriteOutput(inputDataList,outputDataList);
 
 	}
 
@@ -140,12 +140,14 @@ public class PostEmployee extends BaseClass {
 
 			// Assign the data in Object
 			listData = new ArrayList<EmployeeData>();
-
+			int row =0;
 			for (Object[] objects : obj) {
 				EmployeeData data = new EmployeeData();
-				data.name = (String) obj[0][0];
-				data.job = (String) obj[0][1];
+				data.name = (String) obj[row][0];
+				System.out.println("data.name: " + data.name);
+				data.job = (String) obj[row][1];
 				listData.add(data);
+				++row;
 			}
 
 			/*
@@ -160,53 +162,9 @@ public class PostEmployee extends BaseClass {
 
 	}
 
-	private void WriteOutput(EmployeeData inputData, EmployeeData outputData) {
+	
 
-		String outputFilePath = "E:\\Automation\\TestData\\Output\\TestDataInExcel.xlsx";
-		// Blank workbook
-		XSSFWorkbook workbook = new XSSFWorkbook();
-		// Create a blank sheet
-		XSSFSheet sheet = workbook.createSheet("Employee Data");
-
-		for (int row = 0; row <= 1; row++) {
-
-			Row rows = sheet.createRow(row);
-			int cellCount = 0;
-			Cell cells = null;
-			// Compare the outcome and store in excel
-			String result = "true";
-			System.out.println("Rows Count: " + row);
-			if (inputData.name.equals(outputData.name)) {
-				result = "Pass";
-				cellCount = AddCells(rows, cells, cellCount, inputData.name, outputData.name, result);
-				System.out.println("Cells Count: " + cellCount);
-			} else {
-				result = "Fail";
-				cellCount = AddCells(rows, cells, cellCount, inputData.name, outputData.name, result);
-				System.out.println("Cells Count: " + cellCount);
-			}			
-			if (inputData.job.equals(outputData.job)) {
-				result = "Pass";
-				cellCount = AddCells(rows, cells, cellCount, inputData.job, outputData.job, result);
-				System.out.println("Cells Count: " + cellCount);
-			} else {
-				result = "fail";
-				cellCount = AddCells(rows, cells, cellCount, inputData.job, outputData.job, result);
-				System.out.println("Cells Count: " + cellCount);
-			}
-		}
-		try {
-			// Write the workbook in file system
-			FileOutputStream out = new FileOutputStream(new File(outputFilePath));
-			workbook.write(out);
-			out.close();
-			System.out.println("Outputfile written successfully on disk.");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void WriteOutputMultiline(List<EmployeeData> inputDataList, List<EmployeeData> outputDataList) {
+	private void WriteOutput(List<EmployeeData> inputDataList, List<EmployeeData> outputDataList) {
 
 		String outputFilePath = "E:\\Automation\\TestData\\Output\\TestDataInExcel.xlsx";
 		// Blank workbook
