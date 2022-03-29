@@ -69,18 +69,18 @@ public class PostEmployee extends BaseClass {
 		headers.put("Accept", "application/json");
 
 		List<EmployeeData> inputDataList = DataList();
-		int inputDataRowsCount= inputDataList.size();
-		List<EmployeeData> outputDataList=new ArrayList<EmployeeData>();
-		EmployeeData outputData=null;
+		int inputDataRowsCount = inputDataList.size();
+		List<EmployeeData> outputDataList = new ArrayList<EmployeeData>();
+		EmployeeData outputData = null;
 		for (int i = 0; i < inputDataRowsCount; i++) {
 			String jsonRequestData = GetEmployeeToJson(inputDataList.get(i));
-			System.out.println("Json Request: "  + jsonRequestData);
+			System.out.println("Json Request: " + jsonRequestData);
 			Response responseData = RestAPiHelper.PostRequest("users", headers, jsonRequestData);
 			outputData = GetJsonToEmployee(responseData.asString());
 			outputDataList.add(outputData);
-		}		
-		
-		WriteOutput(inputDataList,outputDataList);
+		}
+
+		WriteOutput(inputDataList, outputDataList);
 
 	}
 
@@ -140,7 +140,7 @@ public class PostEmployee extends BaseClass {
 
 			// Assign the data in Object
 			listData = new ArrayList<EmployeeData>();
-			int row =0;
+			int row = 0;
 			for (Object[] objects : obj) {
 				EmployeeData data = new EmployeeData();
 				data.name = (String) obj[row][0];
@@ -162,8 +162,6 @@ public class PostEmployee extends BaseClass {
 
 	}
 
-	
-
 	private void WriteOutput(List<EmployeeData> inputDataList, List<EmployeeData> outputDataList) {
 
 		String outputFilePath = "E:\\Automation\\TestData\\Output\\TestDataInExcel.xlsx";
@@ -171,36 +169,49 @@ public class PostEmployee extends BaseClass {
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		// Create a blank sheet
 		XSSFSheet sheet = workbook.createSheet("Employee Data");
+
+		Row rows = null;
 		
+		Cell cells = null;
 		int rowsSize = inputDataList.size();
+		
+		  if(rowsSize>0) { rows = sheet.createRow(0); AddHeader(rows, cells, 0); }
+		 
 
 		for (int row = 0; row < rowsSize; row++) {
-
-			Row rows = sheet.createRow(row);
-			int cellCount = 0;
-			Cell cells = null;
-			// Compare the outcome and store in excel
-			String result = "true";
+			
 			System.out.println("Rows Count: " + row);
-			if (inputDataList.get(row).name.equals(outputDataList.get(row).name)) {
-				result = "Pass";
-				cellCount = AddCells(rows, cells, cellCount, inputDataList.get(row).name, outputDataList.get(row).name, result);
-				System.out.println("Cells Count: " + cellCount);
-			} else {
-				result = "Fail";
-				cellCount = AddCells(rows, cells, cellCount, inputDataList.get(row).name, outputDataList.get(row).name, result);
-				System.out.println("Cells Count: " + cellCount);
-			}			
-			if (inputDataList.get(row).job.equals(outputDataList.get(row).job)) {
-				result = "Pass";
-				cellCount = AddCells(rows, cells, cellCount, inputDataList.get(row).job, outputDataList.get(row).job, result);
-				System.out.println("Cells Count: " + cellCount);
-			} else {
-				result = "fail";
-				cellCount = AddCells(rows, cells, cellCount, inputDataList.get(row).job, outputDataList.get(row).job, result);
-				System.out.println("Cells Count: " + cellCount);
+			rows = sheet.createRow(row+1);
+
+				
+			int cellCount = 0;
+				// Compare the outcome and store in excel
+				String result = "true";
+				
+				if (inputDataList.get(row).name.equals(outputDataList.get(row).name)) {
+					result = "Pass";
+					cellCount = AddCells(rows, cells, cellCount, inputDataList.get(row).name,
+							outputDataList.get(row).name, result);
+					System.out.println("Cells Count: " + cellCount);
+				} else {
+					result = "Fail";
+					cellCount = AddCells(rows, cells, cellCount, inputDataList.get(row).name,
+							outputDataList.get(row).name, result);
+					System.out.println("Cells Count: " + cellCount);
+				}
+				if (inputDataList.get(row).job.equals(outputDataList.get(row).job)) {
+					result = "Pass";
+					cellCount = AddCells(rows, cells, cellCount, inputDataList.get(row).job,
+							outputDataList.get(row).job, result);
+					System.out.println("Cells Count: " + cellCount);
+				} else {
+					result = "fail";
+					cellCount = AddCells(rows, cells, cellCount, inputDataList.get(row).job,
+							outputDataList.get(row).job, result);
+					System.out.println("Cells Count: " + cellCount);
+				}
 			}
-		}
+		
 		try {
 			// Write the workbook in file system
 			FileOutputStream out = new FileOutputStream(new File(outputFilePath));
@@ -211,6 +222,24 @@ public class PostEmployee extends BaseClass {
 			e.printStackTrace();
 		}
 	}
+
+	private void AddHeader(Row rows, Cell cells,int cellCount) {
+		System.out.println("Adding Header: ");
+		cells = rows.createCell(cellCount);
+		cells.setCellValue("Actual Name");
+		cells = rows.createCell(++cellCount);
+		cells.setCellValue("Expected Name");
+		cells = rows.createCell(++cellCount);
+		cells.setCellValue("Result Name");
+		cells = rows.createCell(++cellCount);
+		cells.setCellValue("Actual Job");
+		cells = rows.createCell(++cellCount);
+		cells.setCellValue("Expected Job");
+		cells = rows.createCell(++cellCount);
+		cells.setCellValue("Result Job");
+		//++cellCount;
+	}
+
 	private int AddCells(Row rows, Cell cells, int cellCount, String inputValue, String outputValue, String result) {
 		System.out.println("name: " + result);
 		cells = rows.createCell(cellCount);
