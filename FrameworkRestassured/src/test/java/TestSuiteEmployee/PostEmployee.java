@@ -200,23 +200,23 @@ public class PostEmployee extends BaseClass {
 
 			if (inputDataList.get(row).name.equals(outputDataList.get(row).name)) {
 				result = "Pass";
-				cellCount = AddCells(rows, cells, cellCount, inputDataList.get(row).name, outputDataList.get(row).name,
+				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).name, outputDataList.get(row).name,
 						result);
 				System.out.println("Cells Count: " + cellCount);
 			} else {
 				result = "Fail";
-				cellCount = AddCells(rows, cells, cellCount, inputDataList.get(row).name, outputDataList.get(row).name,
+				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).name, outputDataList.get(row).name,
 						result);
 				System.out.println("Cells Count: " + cellCount);
 			}
 			if (inputDataList.get(row).job.equals(outputDataList.get(row).job)) {
 				result = "Pass";
-				cellCount = AddCells(rows, cells, cellCount, inputDataList.get(row).job, outputDataList.get(row).job,
+				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).job, outputDataList.get(row).job,
 						result);
 				System.out.println("Cells Count: " + cellCount);
 			} else {
 				result = "fail";
-				cellCount = AddCells(rows, cells, cellCount, inputDataList.get(row).job, outputDataList.get(row).job,
+				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).job, outputDataList.get(row).job,
 						result);
 				System.out.println("Cells Count: " + cellCount);
 			}
@@ -250,7 +250,7 @@ public class PostEmployee extends BaseClass {
 		// ++cellCount;
 	}
 
-	private int AddCells(Row rows, Cell cells, int cellCount, String inputValue, String outputValue, String result) {
+	private int AddCells1(Row rows, Cell cells, int cellCount, String inputValue, String outputValue, String result) {
 		System.out.println("name: " + result);
 		cells = rows.createCell(cellCount);
 		cells.setCellValue(inputValue);
