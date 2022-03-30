@@ -3,6 +3,7 @@ package Utility;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -14,10 +15,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class DataFromExcel {
 
-
 	public static Object[][] ReadDataFromExcel(String filePath) throws IOException {
-		
-		//FileInputStream fis = new FileInputStream("C:\\Users\\Dell\\Downloads\\TestDataInExcel.xlsx");
+
+		// FileInputStream fis = new
+		// FileInputStream("C:\\Users\\Dell\\Downloads\\TestDataInExcel.xlsx");
 		FileInputStream fis = new FileInputStream(filePath);
 		XSSFWorkbook workBook = new XSSFWorkbook(fis);
 		int noOfSheets = workBook.getNumberOfSheets();
@@ -35,7 +36,8 @@ public class DataFromExcel {
 		Iterator<Row> rows = sheet.iterator();
 		r1 = 0;
 		c1 = 0;
-		//FormulaEvaluator formulaEvaluator = workBook.getCreationHelper().createFormulaEvaluator();
+		// FormulaEvaluator formulaEvaluator =
+		// workBook.getCreationHelper().createFormulaEvaluator();
 		while (rows.hasNext()) {
 			Row row = rows.next();
 			System.out.println("Print the rownum: " + row.getRowNum());
@@ -63,13 +65,14 @@ public class DataFromExcel {
 				}
 				c1++;
 			}
-			r1++;c1=0;
+			r1++;
+			c1 = 0;
 		}
 		return data;
 	}
 
-	
-	public static int AddCells(Row rows, Cell cells, int cellCount, String inputValue, String outputValue, String result) {
+	public static int AddCells(Row rows, Cell cells, int cellCount, String inputValue, String outputValue,
+			String result) {
 		System.out.println("name: " + result);
 		cells = rows.createCell(cellCount);
 		cells.setCellValue(inputValue);
@@ -79,5 +82,15 @@ public class DataFromExcel {
 		cells.setCellValue(result);
 		++cellCount;
 		return cellCount;
+	}
+
+	public static void AddHeader(Row rows, Cell cells, int cellCount, ArrayList<String> headersList) {
+
+		for (Iterator iterator = headersList.iterator(); iterator.hasNext();) {
+			String string = (String) iterator.next();
+			cells = rows.createCell(cellCount);
+			cells.setCellValue(string);
+			cells = rows.createCell(++cellCount);
+		}
 	}
 }

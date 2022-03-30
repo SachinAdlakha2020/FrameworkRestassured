@@ -186,7 +186,7 @@ public class PostEmployee extends BaseClass {
 
 		if (rowsSize > 0) {
 			rows = sheet.createRow(0);
-			AddHeader(rows, cells, 0);
+			DataFromExcel.AddHeader(rows, cells, 0,GetHeadersList());
 		}
 
 		for (int row = 0; row < rowsSize; row++) {
@@ -215,7 +215,7 @@ public class PostEmployee extends BaseClass {
 						result);
 				System.out.println("Cells Count: " + cellCount);
 			} else {
-				result = "fail";
+				result = "Fail";
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).job, outputDataList.get(row).job,
 						result);
 				System.out.println("Cells Count: " + cellCount);
@@ -233,32 +233,12 @@ public class PostEmployee extends BaseClass {
 		}
 	}
 
-	private void AddHeader(Row rows, Cell cells, int cellCount) {
-		System.out.println("Adding Header: ");
-		cells = rows.createCell(cellCount);
-		cells.setCellValue("Actual Name");
-		cells = rows.createCell(++cellCount);
-		cells.setCellValue("Expected Name");
-		cells = rows.createCell(++cellCount);
-		cells.setCellValue("Result Name");
-		cells = rows.createCell(++cellCount);
-		cells.setCellValue("Actual Job");
-		cells = rows.createCell(++cellCount);
-		cells.setCellValue("Expected Job");
-		cells = rows.createCell(++cellCount);
-		cells.setCellValue("Result Job");
-		// ++cellCount;
-	}
-
-	private int AddCells1(Row rows, Cell cells, int cellCount, String inputValue, String outputValue, String result) {
-		System.out.println("name: " + result);
-		cells = rows.createCell(cellCount);
-		cells.setCellValue(inputValue);
-		cells = rows.createCell(++cellCount);
-		cells.setCellValue(outputValue);
-		cells = rows.createCell(++cellCount);
-		cells.setCellValue(result);
-		++cellCount;
-		return cellCount;
-	}
+	private ArrayList<String> GetHeadersList() {
+		ArrayList<String> headersList=new ArrayList<String>();
+		headersList.add("Actual Name");headersList.add("Expected Name");headersList.add("Result Name");
+		headersList.add("Actual Job");headersList.add("Expected Job");headersList.add("Result Job");
+		return headersList;
+	}	
+	
+	
 }
