@@ -74,7 +74,7 @@ public class PostEmployee extends BaseClass {
 		headers.put("Content-Type", "application/json");
 		headers.put("Accept", "application/json");
 		EmployeeHelper employeeHelper = new EmployeeHelper();
-		List<Employee> inputDataList = GetEmployeeFromExcel();
+		List<Employee> inputDataList = employeeHelper.GetEmployeeFromExcel();
 		int inputDataRowsCount = inputDataList.size();
 		List<Employee> outputDataList = new ArrayList<Employee>();
 		Employee outputData = null;
@@ -135,39 +135,7 @@ public class PostEmployee extends BaseClass {
 
 	}
 
-	private List<Employee> GetEmployeeFromExcel() throws IOException {
-
-		List<Employee> listData = null;
-		try {
-			// Access the file
-			String filePath = "E:\\Automation\\TestData\\Input\\TestDataInExcel.xlsx";
-			// read the data in two dimentioanl object
-			Object[][] obj = DataFromExcel.ReadDataFromExcel(filePath);
-
-			// Assign the data in Object
-			listData = new ArrayList<Employee>();
-			int row = 0;
-			for (Object[] objects : obj) {
-				Employee data = new Employee();
-				data.name = (String) obj[row][0];
-				System.out.println("data.name: " + data.name);
-				data.job = (String) obj[row][1];
-				listData.add(data);
-				++row;
-			}
-
-			/*
-			 * EmployeeData data=new EmployeeData(); data.name= (String)obj[0][0]; data.job=
-			 * (String)obj[0][1];
-			 */
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return listData;
-
-	}
-
+	
 	
 	
 }

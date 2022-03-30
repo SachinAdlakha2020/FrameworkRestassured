@@ -2,6 +2,7 @@ package DataHelper;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +17,33 @@ import Repository.Employee;
 import Utility.DataFromExcel;
 
 public class EmployeeHelper {
+	
+	public List<Employee> GetEmployeeFromExcel() throws IOException {
+
+		List<Employee> listData = null;
+		try {
+			// Access the file
+			String filePath = "E:\\Automation\\TestData\\Input\\TestDataInExcel.xlsx";
+			// read the data in two dimentioanl object
+			Object[][] obj = DataFromExcel.ReadDataFromExcel(filePath);
+
+			// Assign the data in Object
+			listData = new ArrayList<Employee>();
+			int row = 0;
+			for (Object[] objects : obj) {
+				Employee data = new Employee();
+				data.name = (String) obj[row][0];
+				System.out.println("data.name: " + data.name);
+				data.job = (String) obj[row][1];
+				listData.add(data);
+				++row;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listData;
+
+	}
 
 	public void WriteOutput(List<Employee> inputDataList, List<Employee> outputDataList) {
 
