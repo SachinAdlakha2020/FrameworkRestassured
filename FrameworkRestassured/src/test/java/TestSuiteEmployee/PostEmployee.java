@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 import Model.BaseClass;
 import Model.RestAPiHelper;
-import Repository.EmployeeData;
+import Repository.Employee;
 import Utility.DataFromExcel;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -36,6 +36,8 @@ import io.restassured.internal.mapping.GsonMapper;
 import io.restassured.response.Response;
 
 import com.google.gson.Gson;
+
+import DataHelper.EmployeeHelper;
 
 public class PostEmployee extends BaseClass {
 
@@ -58,7 +60,7 @@ public class PostEmployee extends BaseClass {
 		// Call the post request
 		Response response = RestAPiHelper.PostRequest("users", headers, json);
 
-		EmployeeData data = GetJsonToEmployee(response.asString());
+		Employee data = GetJsonToEmployee(response.asString());
 		System.out.println("Id: " + data.id);
 		System.out.println("CreatedAt: " + data.createdAt);
 
@@ -71,11 +73,11 @@ public class PostEmployee extends BaseClass {
 		Map<String, String> headers = new Hashtable<>();
 		headers.put("Content-Type", "application/json");
 		headers.put("Accept", "application/json");
-
-		List<EmployeeData> inputDataList = DataList();
+		EmployeeHelper employeeHelper = new EmployeeHelper();
+		List<Employee> inputDataList = GetEmployeeFromExcel();
 		int inputDataRowsCount = inputDataList.size();
-		List<EmployeeData> outputDataList = new ArrayList<EmployeeData>();
-		EmployeeData outputData = null;
+		List<Employee> outputDataList = new ArrayList<Employee>();
+		Employee outputData = null;
 		for (int i = 0; i < inputDataRowsCount; i++) {
 			String jsonRequestData = GetEmployeeToJson(inputDataList.get(i));
 			System.out.println("Json Request: " + jsonRequestData);
@@ -84,7 +86,7 @@ public class PostEmployee extends BaseClass {
 			outputDataList.add(outputData);
 		}
 
-		WriteOutput(inputDataList, outputDataList);
+		employeeHelper.WriteOutput(inputDataList, outputDataList);
 
 	}
 
@@ -97,45 +99,45 @@ public class PostEmployee extends BaseClass {
 
 		Response response = RestAPiHelper.PostRequestAsObject("users", headers, GetEmployeeObject());
 
-		EmployeeData data = GetJsonToEmployee(response.asString());
+		Employee data = GetJsonToEmployee(response.asString());
 		System.out.println("Id: " + data.id);
 		System.out.println("CreatedAt: " + data.createdAt);
 
 	}
 
-	private EmployeeData GetEmployeeObject() {
-		EmployeeData data = new EmployeeData();
+	private Employee GetEmployeeObject() {
+		Employee data = new Employee();
 		data.name = "Sachin Adlakha";
 		data.job = "QA Manager";
 		return data;
 	}
 
 	private String GetEmployeeToJson() {
-		EmployeeData data = GetEmployeeObject();
+		Employee data = GetEmployeeObject();
 		Gson gson = new Gson();
-		String jsonString = gson.toJson(data, EmployeeData.class);
+		String jsonString = gson.toJson(data, Employee.class);
 		return jsonString;
 
 	}
 
-	private String GetEmployeeToJson(EmployeeData data) {
+	private String GetEmployeeToJson(Employee data) {
 		// EmployeeData data = GetEmployeeObject();
 		Gson gson = new Gson();
-		String jsonString = gson.toJson(data, EmployeeData.class);
+		String jsonString = gson.toJson(data, Employee.class);
 		return jsonString;
 
 	}
 
-	private EmployeeData GetJsonToEmployee(String jsonString) {
+	private Employee GetJsonToEmployee(String jsonString) {
 		Gson gson = new Gson();
-		EmployeeData data = gson.fromJson(jsonString, EmployeeData.class);
+		Employee data = gson.fromJson(jsonString, Employee.class);
 		return data;
 
 	}
 
-	private List<EmployeeData> DataList() throws IOException {
+	private List<Employee> GetEmployeeFromExcel() throws IOException {
 
-		List<EmployeeData> listData = null;
+		List<Employee> listData = null;
 		try {
 			// Access the file
 			String filePath = "E:\\Automation\\TestData\\Input\\TestDataInExcel.xlsx";
@@ -143,10 +145,10 @@ public class PostEmployee extends BaseClass {
 			Object[][] obj = DataFromExcel.ReadDataFromExcel(filePath);
 
 			// Assign the data in Object
-			listData = new ArrayList<EmployeeData>();
+			listData = new ArrayList<Employee>();
 			int row = 0;
 			for (Object[] objects : obj) {
-				EmployeeData data = new EmployeeData();
+				Employee data = new Employee();
 				data.name = (String) obj[row][0];
 				System.out.println("data.name: " + data.name);
 				data.job = (String) obj[row][1];
@@ -166,79 +168,6 @@ public class PostEmployee extends BaseClass {
 
 	}
 
-	private void WriteOutput(List<EmployeeData> inputDataList, List<EmployeeData> outputDataList) {
-
-		//Creating the unique file name with current date and time.
-		SimpleDateFormat formatter = new SimpleDateFormat("YYYYMMdd-HHmmss");
-		Date date = new Date();
-		String currentDateTime = formatter.format(date);
-		String fileName = "EmployeeResults_" +  currentDateTime + ".xlsx";
-		String outputFilePath = "E:\\Automation\\TestData\\Output\\" + fileName;
-		// Blank workbook
-		XSSFWorkbook workbook = new XSSFWorkbook();
-		// Create a blank sheet
-		XSSFSheet sheet = workbook.createSheet("Employee Data");
-
-		Row rows = null;
-
-		Cell cells = null;
-		int rowsSize = inputDataList.size();
-
-		if (rowsSize > 0) {
-			rows = sheet.createRow(0);
-			DataFromExcel.AddHeader(rows, cells, 0,GetHeadersList());
-		}
-
-		for (int row = 0; row < rowsSize; row++) {
-
-			System.out.println("Rows Count: " + row);
-			rows = sheet.createRow(row + 1);
-
-			int cellCount = 0;
-			// Compare the outcome and store in excel
-			String result = "true";
-
-			if (inputDataList.get(row).name.equals(outputDataList.get(row).name)) {
-				result = "Pass";
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).name, outputDataList.get(row).name,
-						result);
-				System.out.println("Cells Count: " + cellCount);
-			} else {
-				result = "Fail";
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).name, outputDataList.get(row).name,
-						result);
-				System.out.println("Cells Count: " + cellCount);
-			}
-			if (inputDataList.get(row).job.equals(outputDataList.get(row).job)) {
-				result = "Pass";
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).job, outputDataList.get(row).job,
-						result);
-				System.out.println("Cells Count: " + cellCount);
-			} else {
-				result = "Fail";
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).job, outputDataList.get(row).job,
-						result);
-				System.out.println("Cells Count: " + cellCount);
-			}
-		}
-
-		try {
-			// Write the workbook in file system
-			FileOutputStream out = new FileOutputStream(new File(outputFilePath));
-			workbook.write(out);
-			out.close();
-			System.out.println("Outputfile written successfully on disk.");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private ArrayList<String> GetHeadersList() {
-		ArrayList<String> headersList=new ArrayList<String>();
-		headersList.add("Actual Name");headersList.add("Expected Name");headersList.add("Result Name");
-		headersList.add("Actual Job");headersList.add("Expected Job");headersList.add("Result Job");
-		return headersList;
-	}	
 	
 	
 }

@@ -1,4 +1,4 @@
-package Model;
+package DataHelper;
 
 import org.testng.annotations.Test;
 

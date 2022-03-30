@@ -1,6 +1,6 @@
 package Repository;
 
-public class EmployeeData {
+public class Employee {
 	public String name;
 	public String job;
 	public String id;
