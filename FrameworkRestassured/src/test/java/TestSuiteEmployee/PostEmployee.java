@@ -55,12 +55,13 @@ public class PostEmployee extends BaseClass {
 	@Test(enabled = false)
 	public void PostUserUsingStringObject() throws URISyntaxException {
 		Map<String, String> headers = new Hashtable<>();
-		String json = GetEmployeeToJson();
+		EmployeeHelper employeeHelper = new EmployeeHelper();
+		String json = employeeHelper.GetEmployeeToJson();
 		System.out.println(json);
 		// Call the post request
 		Response response = RestAPiHelper.PostRequest("users", headers, json);
 
-		Employee data = GetJsonToEmployee(response.asString());
+		Employee data = employeeHelper.GetJsonToEmployee(response.asString());
 		System.out.println("Id: " + data.id);
 		System.out.println("CreatedAt: " + data.createdAt);
 
@@ -79,10 +80,10 @@ public class PostEmployee extends BaseClass {
 		List<Employee> outputDataList = new ArrayList<Employee>();
 		Employee outputData = null;
 		for (int i = 0; i < inputDataRowsCount; i++) {
-			String jsonRequestData = GetEmployeeToJson(inputDataList.get(i));
+			String jsonRequestData = employeeHelper.GetEmployeeToJson(inputDataList.get(i));
 			System.out.println("Json Request: " + jsonRequestData);
 			Response responseData = RestAPiHelper.PostRequest("users", headers, jsonRequestData);
-			outputData = GetJsonToEmployee(responseData.asString());
+			outputData = employeeHelper.GetJsonToEmployee(responseData.asString());
 			outputDataList.add(outputData);
 		}
 
@@ -96,44 +97,16 @@ public class PostEmployee extends BaseClass {
 		System.out.println("PostUserUsingExcel");
 		Map<String, String> headers = new Hashtable<>();
 		// Object object = (Object)GetEmployeeObject();
+		EmployeeHelper employeeHelper = new EmployeeHelper();
+		Response response = RestAPiHelper.PostRequestAsObject("users", headers, employeeHelper.GetEmployeeObject());
 
-		Response response = RestAPiHelper.PostRequestAsObject("users", headers, GetEmployeeObject());
-
-		Employee data = GetJsonToEmployee(response.asString());
+		Employee data = employeeHelper.GetJsonToEmployee(response.asString());
 		System.out.println("Id: " + data.id);
 		System.out.println("CreatedAt: " + data.createdAt);
 
 	}
 
-	private Employee GetEmployeeObject() {
-		Employee data = new Employee();
-		data.name = "Sachin Adlakha";
-		data.job = "QA Manager";
-		return data;
-	}
 
-	private String GetEmployeeToJson() {
-		Employee data = GetEmployeeObject();
-		Gson gson = new Gson();
-		String jsonString = gson.toJson(data, Employee.class);
-		return jsonString;
-
-	}
-
-	private String GetEmployeeToJson(Employee data) {
-		// EmployeeData data = GetEmployeeObject();
-		Gson gson = new Gson();
-		String jsonString = gson.toJson(data, Employee.class);
-		return jsonString;
-
-	}
-
-	private Employee GetJsonToEmployee(String jsonString) {
-		Gson gson = new Gson();
-		Employee data = gson.fromJson(jsonString, Employee.class);
-		return data;
-
-	}
 
 	
 	

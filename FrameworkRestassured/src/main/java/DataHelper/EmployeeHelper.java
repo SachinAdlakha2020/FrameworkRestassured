@@ -13,11 +13,13 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.google.gson.Gson;
+
 import Repository.Employee;
 import Utility.DataFromExcel;
 
 public class EmployeeHelper {
-	
+
 	public List<Employee> GetEmployeeFromExcel() throws IOException {
 
 		List<Employee> listData = null;
@@ -47,11 +49,11 @@ public class EmployeeHelper {
 
 	public void WriteOutput(List<Employee> inputDataList, List<Employee> outputDataList) {
 
-		//Creating the unique file name with current date and time.
+		// Creating the unique file name with current date and time.
 		SimpleDateFormat formatter = new SimpleDateFormat("YYYYMMdd-HHmmss");
 		Date date = new Date();
 		String currentDateTime = formatter.format(date);
-		String fileName = "EmployeeResults_" +  currentDateTime + ".xlsx";
+		String fileName = "EmployeeResults_" + currentDateTime + ".xlsx";
 		String outputFilePath = "E:\\Automation\\TestData\\Output\\" + fileName;
 		// Blank workbook
 		XSSFWorkbook workbook = new XSSFWorkbook();
@@ -65,7 +67,7 @@ public class EmployeeHelper {
 
 		if (rowsSize > 0) {
 			rows = sheet.createRow(0);
-			DataFromExcel.AddHeader(rows, cells, 0,GetHeadersList());
+			DataFromExcel.AddHeader(rows, cells, 0, GetHeadersList());
 		}
 
 		for (int row = 0; row < rowsSize; row++) {
@@ -79,24 +81,24 @@ public class EmployeeHelper {
 
 			if (inputDataList.get(row).name.equals(outputDataList.get(row).name)) {
 				result = "Pass";
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).name, outputDataList.get(row).name,
-						result);
+				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).name,
+						outputDataList.get(row).name, result);
 				System.out.println("Cells Count: " + cellCount);
 			} else {
 				result = "Fail";
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).name, outputDataList.get(row).name,
-						result);
+				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).name,
+						outputDataList.get(row).name, result);
 				System.out.println("Cells Count: " + cellCount);
 			}
 			if (inputDataList.get(row).job.equals(outputDataList.get(row).job)) {
 				result = "Pass";
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).job, outputDataList.get(row).job,
-						result);
+				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).job,
+						outputDataList.get(row).job, result);
 				System.out.println("Cells Count: " + cellCount);
 			} else {
 				result = "Fail";
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).job, outputDataList.get(row).job,
-						result);
+				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).job,
+						outputDataList.get(row).job, result);
 				System.out.println("Cells Count: " + cellCount);
 			}
 		}
@@ -113,10 +115,43 @@ public class EmployeeHelper {
 	}
 
 	private ArrayList<String> GetHeadersList() {
-		ArrayList<String> headersList=new ArrayList<String>();
-		headersList.add("Actual Name");headersList.add("Expected Name");headersList.add("Result Name");
-		headersList.add("Actual Job");headersList.add("Expected Job");headersList.add("Result Job");
+		ArrayList<String> headersList = new ArrayList<String>();
+		headersList.add("Actual Name");
+		headersList.add("Expected Name");
+		headersList.add("Result Name");
+		headersList.add("Actual Job");
+		headersList.add("Expected Job");
+		headersList.add("Result Job");
 		return headersList;
-	}	
-	
+	}
+
+	public String GetEmployeeToJson() {
+		Employee data = GetEmployeeObject();
+		Gson gson = new Gson();
+		String jsonString = gson.toJson(data, Employee.class);
+		return jsonString;
+
+	}
+
+	public String GetEmployeeToJson(Employee data) {
+		// EmployeeData data = GetEmployeeObject();
+		Gson gson = new Gson();
+		String jsonString = gson.toJson(data, Employee.class);
+		return jsonString;
+
+	}
+
+	public Employee GetJsonToEmployee(String jsonString) {
+		Gson gson = new Gson();
+		Employee data = gson.fromJson(jsonString, Employee.class);
+		return data;
+
+	}
+
+	public Employee GetEmployeeObject() {
+		Employee data = new Employee();
+		data.name = "Sachin Adlakha";
+		data.job = "QA Manager";
+		return data;
+	}
 }
