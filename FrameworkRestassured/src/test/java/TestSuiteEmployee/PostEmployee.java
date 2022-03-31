@@ -41,74 +41,39 @@ import DataHelper.EmployeeHelper;
 
 public class PostEmployee extends BaseClass {
 
-	@Test(enabled = false)
-	public void PostUserUsingStringJson() throws URISyntaxException {
-		Map<String, String> headers = new Hashtable<>();
-		headers.put("Content-Type", "application/json");
-		headers.put("Accept", "application/json");
-		String json = "{\"name\": \"morpheus\",\"job\": \"leader" + "\"}";
-		System.out.println(json);
-
-		Response response = RestAPiHelper.PostRequest("users", headers, json);
-	}
-
-	@Test(enabled = false)
-	public void PostUserUsingStringObject() throws URISyntaxException {
-		Map<String, String> headers = new Hashtable<>();
-		EmployeeHelper employeeHelper = new EmployeeHelper();
-		String json = employeeHelper.GetEmployeeToJson();
-		System.out.println(json);
-		// Call the post request
-		Response response = RestAPiHelper.PostRequest("users", headers, json);
-
-		Employee data = employeeHelper.GetJsonToEmployee(response.asString());
-		System.out.println("Id: " + data.id);
-		System.out.println("CreatedAt: " + data.createdAt);
-
-	}
 
 	@Test
 	public void PostUserUsingExcel() throws URISyntaxException, IOException {
 
 		System.out.println("PostUserUsingObject");
+		//Create the header for request
 		Map<String, String> headers = new Hashtable<>();
 		headers.put("Content-Type", "application/json");
 		headers.put("Accept", "application/json");
 		EmployeeHelper employeeHelper = new EmployeeHelper();
+		//Read the test data from excel and convert into the List of Employee Object
 		List<Employee> inputDataList = employeeHelper.GetEmployeeFromExcel();
+		
 		int inputDataRowsCount = inputDataList.size();
 		List<Employee> outputDataList = new ArrayList<Employee>();
 		Employee outputData = null;
+		//Iterate through all the rows
 		for (int i = 0; i < inputDataRowsCount; i++) {
+			//Serialize the employee object to json
 			String jsonRequestData = employeeHelper.GetEmployeeToJson(inputDataList.get(i));
 			System.out.println("Json Request: " + jsonRequestData);
+			//Call the api and read the response data
 			Response responseData = RestAPiHelper.PostRequest("users", headers, jsonRequestData);
+			//De-Serialize the json into the employee object
 			outputData = employeeHelper.GetJsonToEmployee(responseData.asString());
+			//Add the employee data in list 
 			outputDataList.add(outputData);
 		}
-
+		
+		//write the input and putput with comparision in output file
 		employeeHelper.WriteOutput(inputDataList, outputDataList);
 
 	}
 
-	@Test(enabled = false)
-	public void PostUserUsingObject() throws URISyntaxException {
 
-		System.out.println("PostUserUsingExcel");
-		Map<String, String> headers = new Hashtable<>();
-		// Object object = (Object)GetEmployeeObject();
-		EmployeeHelper employeeHelper = new EmployeeHelper();
-		Response response = RestAPiHelper.PostRequestAsObject("users", headers, employeeHelper.GetEmployeeObject());
-
-		Employee data = employeeHelper.GetJsonToEmployee(response.asString());
-		System.out.println("Id: " + data.id);
-		System.out.println("CreatedAt: " + data.createdAt);
-
-	}
-
-
-
-	
-	
-	
 }
