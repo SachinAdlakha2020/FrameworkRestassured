@@ -43,7 +43,7 @@ public class PostEmployee extends BaseClass {
 
 
 	@Test
-	public void PostUserUsingExcel() throws URISyntaxException, IOException {
+	public void TestEmployeeWithValidData() throws URISyntaxException, IOException {
 
 		System.out.println("PostUserUsingObject");
 		//Create the header for request
