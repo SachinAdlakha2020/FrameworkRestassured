@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 
 import Repository.Employee;
 import Utility.DataFromExcel;
+import Utility.Utilities;
 
 public class EmployeeHelper {
 
@@ -49,11 +50,7 @@ public class EmployeeHelper {
 
 	public void WriteOutput(List<Employee> inputDataList, List<Employee> outputDataList) {
 
-		// Creating the unique file name with current date and time.
-		SimpleDateFormat formatter = new SimpleDateFormat("YYYYMMdd-HHmmss");
-		Date date = new Date();
-		String currentDateTime = formatter.format(date);
-		String fileName = "EmployeeResults_" + currentDateTime + ".xlsx";
+		String fileName = "EmployeeResults_" + Utilities.GetCurrentDatetime() + ".xlsx";
 		String outputFilePath = "E:\\Automation\\TestData\\Output\\" + fileName;
 		// Blank workbook
 		XSSFWorkbook workbook = new XSSFWorkbook();
