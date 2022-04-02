@@ -39,7 +39,7 @@ import com.google.gson.Gson;
 
 import DataHelper.EmployeeHelper;
 
-public class PostEmployee extends BaseClass {
+public class TestEmployee extends BaseClass {
 
 
 	@Test
