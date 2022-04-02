@@ -14,10 +14,11 @@ import Model.BaseClass;
 import Model.RestAPiHelper;
 import Repository.Employee;
 import Repository.RegisterEmployee;
+import Utility.GsonHelper;
 import io.restassured.response.Response;
 
 public class TestRegisterEmployee  extends BaseClass {
-	@Test (enabled=false)
+	@Test (enabled=true)
 	public void TestRegisterEmployeeWithValidData() throws URISyntaxException, IOException {
 
 		System.out.println("TestRegisterEmployeeWithValidData");
@@ -36,12 +37,13 @@ public class TestRegisterEmployee  extends BaseClass {
 		//Iterate through all the rows
 		for (int i = 0; i < inputDataRowsCount; i++) {
 			//Serialize the employee object to json
-			String jsonRequestData = regEmpHelper.ToJson(inputDataList.get(i));
+			String jsonRequestData = GsonHelper.ToJson(inputDataList.get(i));
 			System.out.println("Json Request: " + jsonRequestData);
 			//Call the api and read the response data
 			Response responseData = RestAPiHelper.PostRequest("register", headers, jsonRequestData);
 			//De-Serialize the json into the employee object
-			outputData = regEmpHelper.ToObject(responseData.asString());
+			outputData = new RegisterEmployee();
+			outputData = (RegisterEmployee) GsonHelper.ToObject(responseData.asString(), outputData);
 			//Add the employee data in list 
 			outputDataList.add(outputData);
 		}
@@ -51,7 +53,7 @@ public class TestRegisterEmployee  extends BaseClass {
 
 	}
 	
-	@Test
+	@Test (enabled=true)
 	public void TestRegisterEmployeeWithInValidData() throws URISyntaxException, IOException {
 
 		System.out.println("TestRegisterEmployeeWithInvaliValidData");
@@ -66,16 +68,17 @@ public class TestRegisterEmployee  extends BaseClass {
 		
 		int inputDataRowsCount = inputDataList.size();
 		List<RegisterEmployee> outputDataList = new ArrayList<RegisterEmployee>();
-		Repository.RegisterEmployee outputData = null;
+		RegisterEmployee outputData = null;
 		//Iterate through all the rows
 		for (int i = 0; i < inputDataRowsCount; i++) {
 			//Serialize the employee object to json
-			String jsonRequestData = regEmpHelper.ToJson(inputDataList.get(i));
+			String jsonRequestData = GsonHelper.ToJson(inputDataList.get(i));
 			System.out.println("Json Request: " + jsonRequestData);
 			//Call the api and read the response data
 			Response responseData = RestAPiHelper.PostRequest("register", headers, jsonRequestData);
 			//De-Serialize the json into the employee object
-			outputData = regEmpHelper.ToObject(responseData.asString());
+			outputData = new RegisterEmployee();
+			outputData = (RegisterEmployee) GsonHelper.ToObject(responseData.asString(), outputData);
 			//Add the employee data in list 
 			outputDataList.add(outputData);
 		}

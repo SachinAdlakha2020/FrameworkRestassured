@@ -31,6 +31,7 @@ import Model.RestAPiHelper;
 import Repository.Employee;
 import Repository.RegisterEmployee;
 import Utility.DataFromExcel;
+import Utility.GsonHelper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.internal.mapping.GsonMapper;
@@ -127,14 +128,22 @@ public class TestCode extends BaseClass {
 		employee.token = "28789-49823984-949";
 		employee.error = "No error has come";
 
-		Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+		/*Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
 		String toJson = gson.toJson(employee);
-		System.out.println(toJson);
+		System.out.println(toJson);*/
+		
+		String toJson1=GsonHelper.ToJson(employee);
+		
+		System.out.println(toJson1);
+		
+		
 		RegisterEmployee employee1 = new RegisterEmployee();
+		employee1= (RegisterEmployee) GsonHelper.ToObject(toJson1, employee1);
+		
 		
 		//gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
-		gson = new Gson();
-		employee1 = gson.fromJson(toJson, RegisterEmployee.class);
+		/*gson = new Gson();
+		employee1 = gson.fromJson(toJson, RegisterEmployee.class);*/
 		System.out.println(employee1.scenario);
 		System.out.println(employee1.email);
 		System.out.println(employee1.password);
@@ -143,5 +152,22 @@ public class TestCode extends BaseClass {
 		System.out.println(employee1.error);
 
 	}
+	
+	/*
+	 * public String ToJson(Object data) { // EmployeeData data =
+	 * GetEmployeeObject(); Gson gson = new
+	 * GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().
+	 * create(); String jsonString = gson.toJson(data, Object.class);
+	 * System.out.println("jsonString: " + jsonString); return jsonString;
+	 * 
+	 * }
+	 * 
+	 * public Object ToObject(String jsonString,Object object) { Gson gson = new
+	 * GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().
+	 * create(); object = gson.fromJson(jsonString, object.getClass()); return
+	 * object;
+	 * 
+	 * }
+	 */
 
 }

@@ -273,20 +273,4 @@ public class RegisterEmployeeHelper {
 		return headersList;
 	}
 
-	public String ToJson(RegisterEmployee data) {
-		// EmployeeData data = GetEmployeeObject();
-		Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
-		String jsonString = gson.toJson(data, RegisterEmployee.class);
-		System.out.println("jsonString: " + jsonString);
-		return jsonString;
-
-	}
-
-	public RegisterEmployee ToObject(String jsonString) {
-		Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
-		RegisterEmployee data = gson.fromJson(jsonString, RegisterEmployee.class);
-		return data;
-
-	}
-
 }
