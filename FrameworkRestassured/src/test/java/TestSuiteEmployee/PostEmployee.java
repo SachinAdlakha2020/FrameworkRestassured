@@ -70,7 +70,7 @@ public class PostEmployee extends BaseClass {
 			outputDataList.add(outputData);
 		}
 		
-		//write the input and putput with comparision in output file
+		//write the input and output with comparision in output file
 		employeeHelper.WriteOutput(inputDataList, outputDataList);
 
 	}

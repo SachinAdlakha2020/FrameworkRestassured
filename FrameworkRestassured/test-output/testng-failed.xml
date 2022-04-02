@@ -3,12 +3,11 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="TestSuiteEmployee.PostEmployee">
+      <class name="TestSuiteEmployee.TestRegisterEmployee">
         <methods>
-          <include name="SetUp"/>
-          <include name="PostUserUsingStringObject"/>
+          <include name="TestRegisterEmployeeWithValidData"/>
         </methods>
-      </class> <!-- TestSuiteEmployee.PostEmployee -->
+      </class> <!-- TestSuiteEmployee.TestRegisterEmployee -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

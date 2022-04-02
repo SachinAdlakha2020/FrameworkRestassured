@@ -71,7 +71,27 @@ public class DataFromExcel {
 		return data;
 	}
 
+	public static int AddCells(Row rows, Cell cells, int cellCount, String inputValue) {
+		//System.out.println("name: " + result);
+		cells = rows.createCell(cellCount);
+		cells.setCellValue(inputValue);
+		++cellCount;
+		return cellCount;
+	}
 	public static int AddCells(Row rows, Cell cells, int cellCount, String inputValue, String outputValue,
+			String result) {
+		System.out.println("name: " + result);
+		cells = rows.createCell(cellCount);
+		cells.setCellValue(inputValue);
+		cells = rows.createCell(++cellCount);
+		cells.setCellValue(outputValue);
+		cells = rows.createCell(++cellCount);
+		cells.setCellValue(result);
+		++cellCount;
+		return cellCount;
+	}
+	
+	public static int AddCells(Row rows, Cell cells, int cellCount, double inputValue, double outputValue,
 			String result) {
 		System.out.println("name: " + result);
 		cells = rows.createCell(cellCount);
