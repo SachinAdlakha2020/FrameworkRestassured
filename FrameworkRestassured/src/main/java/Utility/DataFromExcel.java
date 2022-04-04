@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -72,25 +75,29 @@ public class DataFromExcel {
 	}
 
 	public static int AddCells(Row rows, Cell cells, int cellCount, String inputValue) {
-		//System.out.println("name: " + result);
+		// System.out.println("name: " + result);
 		cells = rows.createCell(cellCount);
 		cells.setCellValue(inputValue);
 		++cellCount;
 		return cellCount;
 	}
+
 	public static int AddCells(Row rows, Cell cells, int cellCount, String inputValue, String outputValue,
 			String result) {
 		System.out.println("name: " + result);
+
 		cells = rows.createCell(cellCount);
 		cells.setCellValue(inputValue);
 		cells = rows.createCell(++cellCount);
 		cells.setCellValue(outputValue);
+
 		cells = rows.createCell(++cellCount);
 		cells.setCellValue(result);
+		AddCellColor(cells,result);
 		++cellCount;
 		return cellCount;
 	}
-	
+
 	public static int AddCells(Row rows, Cell cells, int cellCount, double inputValue, double outputValue,
 			String result) {
 		System.out.println("name: " + result);
@@ -99,7 +106,8 @@ public class DataFromExcel {
 		cells = rows.createCell(++cellCount);
 		cells.setCellValue(outputValue);
 		cells = rows.createCell(++cellCount);
-		cells.setCellValue(result);
+		AddCellColor(cells,result);
+		cells.setCellValue(result);		
 		++cellCount;
 		return cellCount;
 	}
@@ -112,5 +120,17 @@ public class DataFromExcel {
 			cells.setCellValue(string);
 			cells = rows.createCell(++cellCount);
 		}
+	}
+	
+	private static void AddCellColor(Cell cells, String result) {
+		CellStyle style = cells.getCellStyle();
+		style =cells.getSheet().getWorkbook().createCellStyle();
+		if (result.equalsIgnoreCase("Pass")) {
+			style.setFillForegroundColor(IndexedColors.GREEN.getIndex());			
+		} else {
+			style.setFillForegroundColor(IndexedColors.RED.getIndex());			
+		}
+		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		cells.setCellStyle(style);
 	}
 }

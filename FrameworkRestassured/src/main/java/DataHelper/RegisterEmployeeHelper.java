@@ -83,15 +83,13 @@ public class RegisterEmployeeHelper {
 
 	public void WriteOutputValidData(List<RegisterEmployee> inputDataList, List<RegisterEmployee> outputDataList) {
 
-		// Creating the unique file name with current date and time.
 		
-		String fileName = "RegisterEmployeeResults_" + Utilities.GetCurrentDatetime() + ".xlsx";
-		String outputFilePath = "E:\\Automation\\TestData\\Output\\" + fileName;
 		// Blank workbook
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		// Create a blank sheet
 		XSSFSheet sheet = workbook.createSheet("Register Employee Data");
 
+		String result = "true";
 		Row rows = null;
 
 		Cell cells = null;
@@ -109,7 +107,7 @@ public class RegisterEmployeeHelper {
 
 			int cellCount = 0;
 			// Compare the outcome and store in excel
-			String result = "true";
+			result = "true";
 
 			if (!inputDataList.get(row).scenario.isEmpty()) {
 				// result = "Pass";
@@ -146,7 +144,7 @@ public class RegisterEmployeeHelper {
 						outputDataList.get(row).id, result);
 				System.out.println("Cells Count: " + cellCount);
 			}
-			if (inputDataList.get(row).token.equals(outputDataList.get(row).token)) {
+			if (!inputDataList.get(row).token.equals(outputDataList.get(row).token)) {
 				result = "Pass";
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).token,
 						outputDataList.get(row).token, result);
@@ -160,6 +158,10 @@ public class RegisterEmployeeHelper {
 		}
 
 		try {
+			// Creating the unique file name with current date and time.
+			
+			String fileName =  result + "_RegisterEmployeeResults_" + Utilities.GetCurrentDatetime() + ".xlsx";
+			String outputFilePath = "E:\\Automation\\TestData\\Output\\" + fileName;
 			// Write the workbook in file system
 			FileOutputStream out = new FileOutputStream(new File(outputFilePath));
 			workbook.write(out);
@@ -172,15 +174,13 @@ public class RegisterEmployeeHelper {
 	
 	public void WriteOutputInvalidData(List<RegisterEmployee> inputDataList, List<RegisterEmployee> outputDataList) {
 
-		// Creating the unique file name with current date and time.
 		
-		String fileName = "RegisterEmployeeInvalidResults_" + Utilities.GetCurrentDatetime() + ".xlsx";
-		String outputFilePath = "E:\\Automation\\TestData\\Output\\" + fileName;
 		// Blank workbook
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		// Create a blank sheet
 		XSSFSheet sheet = workbook.createSheet("Register Employee Invalid Data");
 
+		String result = "true";
 		Row rows = null;
 
 		Cell cells = null;
@@ -198,7 +198,7 @@ public class RegisterEmployeeHelper {
 
 			int cellCount = 0;
 			// Compare the outcome and store in excel
-			String result = "true";
+			result = "true";
 
 			if (!inputDataList.get(row).scenario.isEmpty()) {
 				// result = "Pass";
@@ -238,6 +238,11 @@ public class RegisterEmployeeHelper {
 		}
 
 		try {
+			
+			// Creating the unique file name with current date and time.
+			
+			String fileName =  result + "_RegisterEmployeeInvalidResults_" + Utilities.GetCurrentDatetime() + ".xlsx";
+			String outputFilePath = "E:\\Automation\\TestData\\Output\\" + fileName;
 			// Write the workbook in file system
 			FileOutputStream out = new FileOutputStream(new File(outputFilePath));
 			workbook.write(out);

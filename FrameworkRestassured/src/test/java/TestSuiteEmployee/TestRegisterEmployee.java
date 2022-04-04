@@ -52,8 +52,7 @@ public class TestRegisterEmployee  extends BaseClass {
 		regEmpHelper.WriteOutputValidData(inputDataList, outputDataList);
 
 	}
-	
-	@Test (enabled=true)
+		@Test (enabled=true)
 	public void TestRegisterEmployeeWithInValidData() throws URISyntaxException, IOException {
 
 		System.out.println("TestRegisterEmployeeWithInvaliValidData");
