@@ -5,7 +5,9 @@
     <classes>
       <class name="TestSuiteEmployee.TestRegisterEmployee">
         <methods>
+          <include name="SetUp"/>
           <include name="TestRegisterEmployeeWithValidData"/>
+          <include name="TestRegisterEmployeeWithInValidData"/>
         </methods>
       </class> <!-- TestSuiteEmployee.TestRegisterEmployee -->
     </classes>

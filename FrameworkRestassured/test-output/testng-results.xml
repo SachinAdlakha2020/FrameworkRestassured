@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+<testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2022-04-02T09:16:53 IST" name="Default suite" finished-at="2022-04-02T09:16:56 IST" duration-ms="3141">
+  <suite started-at="2022-04-04T16:48:27 IST" name="Default suite" finished-at="2022-04-04T16:48:32 IST" duration-ms="4851">
     <groups>
     </groups>
-    <test started-at="2022-04-02T09:16:53 IST" name="Default test" finished-at="2022-04-02T09:16:56 IST" duration-ms="3141">
+    <test started-at="2022-04-04T16:48:27 IST" name="Default test" finished-at="2022-04-04T16:48:32 IST" duration-ms="4851">
       <class name="TestSuiteEmployee.TestRegisterEmployee">
-        <test-method is-config="true" signature="SetUp()[pri:0, instance:TestSuiteEmployee.TestRegisterEmployee@9225652]" started-at="2022-04-02T09:16:53 IST" name="SetUp" finished-at="2022-04-02T09:16:54 IST" duration-ms="567" status="PASS">
+        <test-method is-config="true" signature="SetUp()[pri:0, instance:TestSuiteEmployee.TestRegisterEmployee@654f0d9c]" started-at="2022-04-04T16:48:27 IST" name="SetUp" finished-at="2022-04-04T16:48:28 IST" duration-ms="536" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- SetUp -->
-        <test-method signature="TestRegisterEmployeeWithValidData()[pri:0, instance:TestSuiteEmployee.TestRegisterEmployee@9225652]" started-at="2022-04-02T09:16:54 IST" name="TestRegisterEmployeeWithValidData" finished-at="2022-04-02T09:16:56 IST" duration-ms="2540" status="PASS">
+        <test-method signature="TestRegisterEmployeeWithInValidData()[pri:0, instance:TestSuiteEmployee.TestRegisterEmployee@654f0d9c]" started-at="2022-04-04T16:48:28 IST" name="TestRegisterEmployeeWithInValidData" finished-at="2022-04-04T16:48:32 IST" duration-ms="3673" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- TestRegisterEmployeeWithInValidData -->
+        <test-method signature="TestRegisterEmployeeWithValidData()[pri:0, instance:TestSuiteEmployee.TestRegisterEmployee@654f0d9c]" started-at="2022-04-04T16:48:32 IST" name="TestRegisterEmployeeWithValidData" finished-at="2022-04-04T16:48:32 IST" duration-ms="610" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- TestRegisterEmployeeWithValidData -->

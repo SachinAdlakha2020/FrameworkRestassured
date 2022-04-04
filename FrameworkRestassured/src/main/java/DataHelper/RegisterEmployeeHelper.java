@@ -52,7 +52,7 @@ public class RegisterEmployeeHelper {
 		return listData;
 
 	}
-	
+
 	public List<RegisterEmployee> GetRegisterEmpInvalidData() throws IOException {
 
 		List<RegisterEmployee> listData = null;
@@ -68,8 +68,16 @@ public class RegisterEmployeeHelper {
 			for (Object[] objects : obj) {
 				RegisterEmployee data = new RegisterEmployee();
 				data.scenario = (String) obj[row][0];
-				if (obj[row][1]!=null) {data.email = (String) obj[row][1];}else {data.email="";}
-				if (obj[row][2]!=null) {data.password = (String) obj[row][2];}else {data.password="";}
+				if (obj[row][1] != null) {
+					data.email = (String) obj[row][1];
+				} else {
+					data.email = "";
+				}
+				if (obj[row][2] != null) {
+					data.password = (String) obj[row][2];
+				} else {
+					data.password = "";
+				}
 				data.error = (String) obj[row][3];
 				listData.add(data);
 				++row;
@@ -83,13 +91,13 @@ public class RegisterEmployeeHelper {
 
 	public void WriteOutputValidData(List<RegisterEmployee> inputDataList, List<RegisterEmployee> outputDataList) {
 
-		
 		// Blank workbook
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		// Create a blank sheet
 		XSSFSheet sheet = workbook.createSheet("Register Employee Data");
 
-		String result = "true";
+		String fieldResult = "Pass";
+		String recordResult = "Pass";
 		Row rows = null;
 
 		Cell cells = null;
@@ -105,9 +113,7 @@ public class RegisterEmployeeHelper {
 			System.out.println("Rows Count: " + row);
 			rows = sheet.createRow(row + 1);
 
-			int cellCount = 0;
-			// Compare the outcome and store in excel
-			result = "true";
+			int cellCount = 0;fieldResult = "Pass";recordResult = "Pass";
 
 			if (!inputDataList.get(row).scenario.isEmpty()) {
 				// result = "Pass";
@@ -133,34 +139,35 @@ public class RegisterEmployeeHelper {
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, "password is not added");
 				System.out.println("Cells Count: " + cellCount);
 			}
-			if (inputDataList.get(row).id==outputDataList.get(row).id) {
-				result = "Pass";
+			if (inputDataList.get(row).id == outputDataList.get(row).id) {
+				fieldResult = "Pass";
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).id,
-						outputDataList.get(row).id, result);
+						outputDataList.get(row).id, fieldResult);
 				System.out.println("Cells Count: " + cellCount);
 			} else {
-				result = "Fail";
+				fieldResult = "Fail";recordResult = "Fail";
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).id,
-						outputDataList.get(row).id, result);
+						outputDataList.get(row).id, fieldResult);
 				System.out.println("Cells Count: " + cellCount);
 			}
-			if (!inputDataList.get(row).token.equals(outputDataList.get(row).token)) {
-				result = "Pass";
+			if (inputDataList.get(row).token.equals(outputDataList.get(row).token)) {
+				fieldResult = "Pass";
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).token,
-						outputDataList.get(row).token, result);
+						outputDataList.get(row).token, fieldResult);
 				System.out.println("Cells Count: " + cellCount);
 			} else {
-				result = "Fail";
+				fieldResult = "Fail";recordResult = "Fail";
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).token,
-						outputDataList.get(row).token, result);
+						outputDataList.get(row).token, fieldResult);
 				System.out.println("Cells Count: " + cellCount);
 			}
+			DataFromExcel.FinalStatusCell(rows,cells,cellCount,recordResult);
 		}
 
 		try {
 			// Creating the unique file name with current date and time.
-			
-			String fileName =  result + "_RegisterEmployeeResults_" + Utilities.GetCurrentDatetime() + ".xlsx";
+
+			String fileName = fieldResult + "_RegisterEmployeeResults_" + Utilities.GetCurrentDatetime() + ".xlsx";
 			String outputFilePath = "E:\\Automation\\TestData\\Output\\" + fileName;
 			// Write the workbook in file system
 			FileOutputStream out = new FileOutputStream(new File(outputFilePath));
@@ -171,7 +178,7 @@ public class RegisterEmployeeHelper {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void WriteOutputInvalidData(List<RegisterEmployee> inputDataList, List<RegisterEmployee> outputDataList) {
 
 		
@@ -180,7 +187,8 @@ public class RegisterEmployeeHelper {
 		// Create a blank sheet
 		XSSFSheet sheet = workbook.createSheet("Register Employee Invalid Data");
 
-		String result = "true";
+		String fieldResult = "Pass";
+		String recordResult = "Pass";
 		Row rows = null;
 
 		Cell cells = null;
@@ -196,9 +204,9 @@ public class RegisterEmployeeHelper {
 			System.out.println("Rows Count: " + row);
 			rows = sheet.createRow(row + 1);
 
-			int cellCount = 0;
+			int cellCount = 0;fieldResult = "Pass";recordResult = "Pass";
 			// Compare the outcome and store in excel
-			result = "true";
+			
 
 			if (!inputDataList.get(row).scenario.isEmpty()) {
 				// result = "Pass";
@@ -225,23 +233,24 @@ public class RegisterEmployeeHelper {
 				System.out.println("Cells Count: " + cellCount);
 			}
 			if (inputDataList.get(row).error.equals(outputDataList.get(row).error)) {
-				result = "Pass";
+				fieldResult = "Pass";
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).error,
-						outputDataList.get(row).error, result);
+						outputDataList.get(row).error, fieldResult);
 				System.out.println("Cells Count: " + cellCount);
 			} else {
-				result = "Fail";
+				fieldResult = "Fail";recordResult="Fail";
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).error,
-						outputDataList.get(row).error, result);
+						outputDataList.get(row).error, fieldResult);
 				System.out.println("Cells Count: " + cellCount);
 			}
+			DataFromExcel.FinalStatusCell(rows,cells,cellCount,recordResult);
 		}
 
 		try {
 			
 			// Creating the unique file name with current date and time.
 			
-			String fileName =  result + "_RegisterEmployeeInvalidResults_" + Utilities.GetCurrentDatetime() + ".xlsx";
+			String fileName =  fieldResult + "_RegisterEmployeeInvalidResults_" + Utilities.GetCurrentDatetime() + ".xlsx";
 			String outputFilePath = "E:\\Automation\\TestData\\Output\\" + fileName;
 			// Write the workbook in file system
 			FileOutputStream out = new FileOutputStream(new File(outputFilePath));
@@ -264,9 +273,10 @@ public class RegisterEmployeeHelper {
 		headersList.add("Token Expected");
 		headersList.add("Token Actual");
 		headersList.add("Token Result");
+		headersList.add("Final Result");
 		return headersList;
 	}
-	
+
 	private ArrayList<String> GetHeadersListInvalidData() {
 		ArrayList<String> headersList = new ArrayList<String>();
 		headersList.add("Scenario");
@@ -275,6 +285,7 @@ public class RegisterEmployeeHelper {
 		headersList.add("Error Expected");
 		headersList.add("Error Actual");
 		headersList.add("Error Result");
+		headersList.add("Final Result");
 		return headersList;
 	}
 

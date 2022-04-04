@@ -84,8 +84,6 @@ public class DataFromExcel {
 
 	public static int AddCells(Row rows, Cell cells, int cellCount, String inputValue, String outputValue,
 			String result) {
-		System.out.println("name: " + result);
-
 		cells = rows.createCell(cellCount);
 		cells.setCellValue(inputValue);
 		cells = rows.createCell(++cellCount);
@@ -122,6 +120,12 @@ public class DataFromExcel {
 		}
 	}
 	
+	public static void FinalStatusCell(Row rows, Cell cells, int cellCount, String recordResult) {
+		cells = rows.createCell(cellCount);
+		AddCellColor(cells,recordResult);
+		cells.setCellValue(recordResult);		
+		++cellCount;
+	}
 	private static void AddCellColor(Cell cells, String result) {
 		CellStyle style = cells.getCellStyle();
 		style =cells.getSheet().getWorkbook().createCellStyle();
