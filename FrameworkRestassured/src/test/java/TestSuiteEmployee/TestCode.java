@@ -39,6 +39,7 @@ import io.restassured.response.Response;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.relevantcodes.extentreports.LogStatus;
 
 import DataHelper.EmployeeHelper;
 
@@ -172,5 +173,12 @@ public class TestCode extends BaseClass {
 	 * 
 	 * }
 	 */
-
+	@Test	
+	private void TestReports() {
+		Reports.logger = Reports.extent.startTest("Test Name");
+		//Reports.logger.
+		Reports.logger.log(LogStatus.PASS, "Test Step 1");
+		Reports.logger.log(LogStatus.PASS, "Test Step 2");
+		Reports.logger.log(LogStatus.PASS, "Test Step 3");
+	}
 }

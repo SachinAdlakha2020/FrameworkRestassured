@@ -1,5 +1,6 @@
 package DataHelper;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,9 +16,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
 
 import Repository.Employee;
 import Repository.RegisterEmployee;
+
 import Utility.DataFromExcel;
 import Utility.Utilities;
 
@@ -89,7 +93,7 @@ public class RegisterEmployeeHelper {
 
 	}
 
-	public void WriteOutputValidData(List<RegisterEmployee> inputDataList, List<RegisterEmployee> outputDataList) {
+	public void WriteOutputValidData(List<RegisterEmployee> inputDataList, List<RegisterEmployee> outputDataList, ExtentTest logger) {
 
 		// Blank workbook
 		XSSFWorkbook workbook = new XSSFWorkbook();
@@ -112,11 +116,11 @@ public class RegisterEmployeeHelper {
 
 			System.out.println("Rows Count: " + row);
 			rows = sheet.createRow(row + 1);
-
+			String scenario = "Scenario is not defined";
 			int cellCount = 0;fieldResult = "Pass";recordResult = "Pass";
 
 			if (!inputDataList.get(row).scenario.isEmpty()) {
-				// result = "Pass";
+				scenario = inputDataList.get(row).scenario;
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).scenario);
 				System.out.println("Cells Count: " + cellCount);
 			} else {
@@ -162,6 +166,8 @@ public class RegisterEmployeeHelper {
 				System.out.println("Cells Count: " + cellCount);
 			}
 			DataFromExcel.FinalStatusCell(rows,cells,cellCount,recordResult);
+			Utilities.addStepResult(fieldResult, scenario, logger);
+			
 		}
 
 		try {
@@ -179,7 +185,7 @@ public class RegisterEmployeeHelper {
 		}
 	}
 
-	public void WriteOutputInvalidData(List<RegisterEmployee> inputDataList, List<RegisterEmployee> outputDataList) {
+	public void WriteOutputInvalidData(List<RegisterEmployee> inputDataList, List<RegisterEmployee> outputDataList,ExtentTest logger) {
 
 		
 		// Blank workbook
@@ -203,17 +209,17 @@ public class RegisterEmployeeHelper {
 
 			System.out.println("Rows Count: " + row);
 			rows = sheet.createRow(row + 1);
-
+			String scenario = "Scenario is not defined";
 			int cellCount = 0;fieldResult = "Pass";recordResult = "Pass";
 			// Compare the outcome and store in excel
 			
 
 			if (!inputDataList.get(row).scenario.isEmpty()) {
-				// result = "Pass";
+				scenario= inputDataList.get(row).scenario;
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).scenario);
 				System.out.println("Cells Count: " + cellCount);
 			} else {
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, "Scenario is not added");
+				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, "Scenario is not defined");
 				System.out.println("Cells Count: " + cellCount);
 			}
 			if (!inputDataList.get(row).email.isEmpty()) {
@@ -244,6 +250,7 @@ public class RegisterEmployeeHelper {
 				System.out.println("Cells Count: " + cellCount);
 			}
 			DataFromExcel.FinalStatusCell(rows,cells,cellCount,recordResult);
+			Utilities.addStepResult(fieldResult, scenario, logger);
 		}
 
 		try {

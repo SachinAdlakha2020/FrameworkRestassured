@@ -11,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 
 import DataHelper.RegisterEmployeeHelper;
@@ -56,11 +57,10 @@ public class TestRegisterEmployee  extends BaseClass {
 		}
 		
 		//write the input and output with comparision in output file
-		regEmpHelper.WriteOutputValidData(inputDataList, outputDataList);
-		Reports.logger.log(LogStatus.PASS, "Test Register employee with valid data");
+		regEmpHelper.WriteOutputValidData(inputDataList, outputDataList,Reports.logger);
+		//Reports.logger.log(LogStatus.PASS, "Test Register employee with valid data");
 		
 	}
-	
 	@Test (enabled=true)
 	public void TestRegisterEmployeeWithInValidData() throws URISyntaxException, IOException {
 
@@ -94,7 +94,8 @@ public class TestRegisterEmployee  extends BaseClass {
 			outputDataList.add(outputData);
 		}		
 		//write the input and output with comparision in output file
-		regEmpHelper.WriteOutputInvalidData(inputDataList, outputDataList);
-		Reports.logger.log(LogStatus.PASS, "Test Register employee with invalid data");
+		regEmpHelper.WriteOutputInvalidData(inputDataList, outputDataList, Reports.logger);
+		//Reports.logger.log(LogStatus.PASS, "Test Register employee with invalid data");
+		
 	}
 }

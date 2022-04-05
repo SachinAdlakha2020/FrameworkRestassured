@@ -82,4 +82,7 @@ public class Reports {
 		// close() - To close all the operation
 		//extent.close();
 	}
+	
+	
+
 }
