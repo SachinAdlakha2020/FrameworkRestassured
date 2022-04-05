@@ -30,7 +30,7 @@ public class Reports {
 //extent.addSystemInfo("Environment","Environment Name")
 		/*
 		 * extent .addSystemInfo("Host Name", "SoftwareTestingMaterial")
-		 * .addSystemInfo("Environment", "Automation Testing")
+		 * .addSystemInfo("Environment", "Automation Testing") 
 		 * .addSystemInfo("User Name", "Rajkumar SM");
 		 */
 		// loading the external xml file (i.e., extent-config.xml) which was placed
