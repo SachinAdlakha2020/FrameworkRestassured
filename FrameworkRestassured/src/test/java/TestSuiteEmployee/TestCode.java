@@ -118,7 +118,7 @@ public class TestCode extends BaseClass {
 
 	}
 
-	@Test
+	@Test (enabled=false )
 	public void checkSerialization() {
 		RegisterEmployee employee = new RegisterEmployee();
 		employee.scenario = "Added Scenario";
@@ -152,7 +152,10 @@ public class TestCode extends BaseClass {
 		System.out.println(employee1.error);
 
 	}
-	
+	@Test (enabled=true )
+	private void GetUserDirectory() {
+		System.out.println(System.getProperty("user.dir"));
+	}
 	/*
 	 * public String ToJson(Object data) { // EmployeeData data =
 	 * GetEmployeeObject(); Gson gson = new

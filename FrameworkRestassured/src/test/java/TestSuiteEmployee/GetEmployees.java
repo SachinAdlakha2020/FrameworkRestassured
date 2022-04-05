@@ -20,7 +20,7 @@ import io.restassured.response.Response;
 public class GetEmployees extends BaseClass {
 
 	
-	@Test
+	@Test(enabled=false)
 	public void GetEmpListWithHeader()   throws URISyntaxException {
 		Map<String, String> headers = new Hashtable<>();
 		headers.put("Accept", "application/json");

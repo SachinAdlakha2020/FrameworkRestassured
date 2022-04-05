@@ -75,7 +75,6 @@ public class EmployeeHelper {
 			int cellCount = 0;
 			// Compare the outcome and store in excel
 			String result = "true";
-
 			if (inputDataList.get(row).name.equals(outputDataList.get(row).name)) {
 				result = "Pass";
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).name,

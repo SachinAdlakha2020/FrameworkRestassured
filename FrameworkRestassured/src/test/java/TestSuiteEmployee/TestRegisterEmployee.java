@@ -7,7 +7,11 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.LogStatus;
 
 import DataHelper.RegisterEmployeeHelper;
 import Model.BaseClass;
@@ -21,6 +25,9 @@ public class TestRegisterEmployee  extends BaseClass {
 	@Test (enabled=true)
 	public void TestRegisterEmployeeWithValidData() throws URISyntaxException, IOException {
 
+		
+		Reports.logger = Reports.extent.startTest("Test Register employee with valid data");		
+			
 		System.out.println("TestRegisterEmployeeWithValidData");
 		//Create the header for request
 		Map<String, String> headers = new Hashtable<>();
@@ -50,11 +57,16 @@ public class TestRegisterEmployee  extends BaseClass {
 		
 		//write the input and output with comparision in output file
 		regEmpHelper.WriteOutputValidData(inputDataList, outputDataList);
-
+		Reports.logger.log(LogStatus.PASS, "Test Register employee with valid data");
+		
 	}
-		@Test (enabled=true)
+	
+	@Test (enabled=true)
 	public void TestRegisterEmployeeWithInValidData() throws URISyntaxException, IOException {
 
+		Reports.logger = Reports.extent.startTest("Test Register employee with invalid data");	
+		
+		//Reports.endReport();
 		System.out.println("TestRegisterEmployeeWithInvaliValidData");
 		//Create the header for request
 		Map<String, String> headers = new Hashtable<>();
@@ -80,10 +92,9 @@ public class TestRegisterEmployee  extends BaseClass {
 			outputData = (RegisterEmployee) GsonHelper.ToObject(responseData.asString(), outputData);
 			//Add the employee data in list 
 			outputDataList.add(outputData);
-		}
-		
+		}		
 		//write the input and output with comparision in output file
 		regEmpHelper.WriteOutputInvalidData(inputDataList, outputDataList);
-
+		Reports.logger.log(LogStatus.PASS, "Test Register employee with invalid data");
 	}
 }

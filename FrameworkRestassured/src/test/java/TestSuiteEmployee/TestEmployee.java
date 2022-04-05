@@ -42,7 +42,7 @@ import DataHelper.EmployeeHelper;
 public class TestEmployee extends BaseClass {
 
 
-	@Test
+	@Test (enabled=false)
 	public void TestEmployeeWithValidData() throws URISyntaxException, IOException {
 
 		System.out.println("PostUserUsingObject");
