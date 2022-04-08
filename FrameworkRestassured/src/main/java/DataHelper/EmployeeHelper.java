@@ -26,26 +26,26 @@ import Utility.Utilities;
 
 public class EmployeeHelper {
 
-	public List<DataPerPage> GetPerDataList(){
+	public List<DataPerPage> GetPerDataList() {
 		List<DataPerPage> listData = null;
-		ArrayList<UserData> userListData=null;
-		Support support=null;
+		ArrayList<UserData> userListData = null;
+		Support support = null;
 		try {
 			// Access the file
 			String filePath = "E:\\Automation\\TestData\\Input\\EmployeesListInput.xlsx";
 			// read the data in two dimentioanl object
-			Object[][] objPageDetail = DataFromExcel.ReadDataFromExcel(filePath,"pageDetails");
-			Object[][] objEmployeeDetail = DataFromExcel.ReadDataFromExcel(filePath,"employessDetails");
-			Object[][] objSupportDetail = DataFromExcel.ReadDataFromExcel(filePath,"support");
+			Object[][] objPageDetail = DataFromExcel.ReadDataFromExcel(filePath, "pageDetails");
+			Object[][] objEmployeeDetail = DataFromExcel.ReadDataFromExcel(filePath, "employessDetails");
+			Object[][] objSupportDetail = DataFromExcel.ReadDataFromExcel(filePath, "support");
 
 			// Assign the data in Object
 			listData = new ArrayList<DataPerPage>();
 			userListData = new ArrayList<UserData>();
-			
+
 			int row = 0;
-			int innerRow1=0;
-			int innerRow2=0;
-			double var=0.0;
+			int innerRow1 = 0;
+			int innerRow2 = 0;
+			double var = 0.0;
 			for (Object[] objects : objPageDetail) {
 				DataPerPage data = new DataPerPage();
 				data.scenario = (String) objPageDetail[row][0];
@@ -57,27 +57,27 @@ public class EmployeeHelper {
 				data.total = (int) var;
 				var = (Double) objPageDetail[row][4];
 				data.total_pages = (int) var;
-				for (Object[] objects1 : objEmployeeDetail){
+				for (Object[] objects1 : objEmployeeDetail) {
 					DataPerPage.UserData userData = data.new UserData();
 					userData.scenario = (String) objEmployeeDetail[innerRow1][0];
 					var = (Double) objEmployeeDetail[innerRow1][1];
-					userData.id= (int) var;
+					userData.id = (int) var;
 					userData.email = (String) objEmployeeDetail[innerRow1][2];
 					userData.first_name = (String) objEmployeeDetail[innerRow1][3];
 					userData.last_name = (String) objEmployeeDetail[innerRow1][4];
-					userData.avatar = (String) objEmployeeDetail[innerRow1][5];					
+					userData.avatar = (String) objEmployeeDetail[innerRow1][5];
 					userListData.add(userData);
 					++innerRow1;
 				}
-				for (Object[] objects1 : objSupportDetail){
+				for (Object[] objects1 : objSupportDetail) {
 					support = data.new Support();
 					support.scenario = (String) objSupportDetail[innerRow2][0];
 					support.url = (String) objSupportDetail[innerRow2][1];
 					support.text = (String) objSupportDetail[innerRow2][2];
 				}
-				
-				data.data=userListData;
-				data.support=support;
+
+				data.data = userListData;
+				data.support = support;
 				listData.add(data);
 				++row;
 			}
@@ -85,8 +85,9 @@ public class EmployeeHelper {
 			e.printStackTrace();
 		}
 		return listData;
-		
+
 	}
+
 	public List<Employee> GetEmployeeFromExcel() throws IOException {
 
 		List<Employee> listData = null;
@@ -94,7 +95,7 @@ public class EmployeeHelper {
 			// Access the file
 			String filePath = "E:\\Automation\\TestData\\Input\\TestDataInExcel.xlsx";
 			// read the data in two dimentioanl object
-			Object[][] obj = DataFromExcel.ReadDataFromExcel(filePath,"Sheet1");
+			Object[][] obj = DataFromExcel.ReadDataFromExcel(filePath, "Sheet1");
 
 			// Assign the data in Object
 			listData = new ArrayList<Employee>();
@@ -175,8 +176,9 @@ public class EmployeeHelper {
 			e.printStackTrace();
 		}
 	}
-	
-	public void WriteOutputDataPerPageValidData(List<DataPerPage> inputDataList, List<DataPerPage> outputDataList, ExtentTest logger) {
+
+	public void WriteOutputDataPerPageValidData(List<DataPerPage> inputDataList, List<DataPerPage> outputDataList,
+			ExtentTest logger) {
 
 		// Blank workbook
 		XSSFWorkbook workbook = new XSSFWorkbook();
@@ -200,7 +202,9 @@ public class EmployeeHelper {
 			System.out.println("Rows Count: " + row);
 			rows = sheet.createRow(row + 1);
 			String scenario = "Scenario is not defined";
-			int cellCount = 0;fieldResult = "Pass";recordResult = "Pass";
+			int cellCount = 0;
+			fieldResult = "Pass";
+			recordResult = "Pass";
 
 			if (!inputDataList.get(row).scenario.isEmpty()) {
 				scenario = inputDataList.get(row).scenario;
@@ -210,23 +214,24 @@ public class EmployeeHelper {
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, "Scenario is not added");
 				System.out.println("Cells Count: " + cellCount);
 			}
-			
+
 			if (inputDataList.get(row).page == outputDataList.get(row).page) {
 				fieldResult = "Pass";
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).page,
 						outputDataList.get(row).page, fieldResult);
 				System.out.println("Cells Count: " + cellCount);
 			} else {
-				fieldResult = "Fail";recordResult = "Fail";
+				fieldResult = "Fail";
+				recordResult = "Fail";
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).page,
 						outputDataList.get(row).page, fieldResult);
 				System.out.println("Cells Count: " + cellCount);
 			}
-			
-			DataFromExcel.FinalStatusCell(rows,cells,cellCount,recordResult);
-			//Utilities.addStepResult(fieldResult, scenario, logger);
-			WriteOutputEmployessDetailsValidData(inputDataList,outputDataList,logger,workbook);
-			WriteOutputEmployessSupportValidData(inputDataList,outputDataList,logger,workbook);
+
+			DataFromExcel.FinalStatusCell(rows, cells, cellCount, recordResult);
+			// Utilities.addStepResult(fieldResult, scenario, logger);
+			WriteOutputEmployessDetailsValidData(inputDataList, outputDataList, logger, workbook);
+			WriteOutputEmployessSupportValidData(inputDataList, outputDataList, logger, workbook);
 		}
 
 		try {
@@ -243,11 +248,12 @@ public class EmployeeHelper {
 			e.printStackTrace();
 		}
 	}
-	
-	public void WriteOutputEmployessDetailsValidData(List<DataPerPage> inputDataList, List<DataPerPage> outputDataList, ExtentTest logger,XSSFWorkbook workbook) {
+
+	private void WriteOutputEmployessDetailsValidData(List<DataPerPage> inputDataList, List<DataPerPage> outputDataList,
+			ExtentTest logger, XSSFWorkbook workbook) {
 
 		// Blank workbook
-		//XSSFWorkbook workbook = new XSSFWorkbook();
+		// XSSFWorkbook workbook = new XSSFWorkbook();
 		// Create a blank sheet
 		XSSFSheet sheet = workbook.createSheet("employessDetails");
 
@@ -268,38 +274,40 @@ public class EmployeeHelper {
 			System.out.println("Rows Count: " + row);
 			rows = sheet.createRow(row + 1);
 			String scenario = "Scenario is not defined";
-			int cellCount = 0;fieldResult = "Pass";recordResult = "Pass";
+			int cellCount = 0;
+			fieldResult = "Pass";
+			recordResult = "Pass";
 
 			if (!inputDataList.get(row).data.get(0).scenario.isEmpty()) {
 				scenario = inputDataList.get(row).scenario;
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).data.get(0).scenario);				
+				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).data.get(0).scenario);
 			} else {
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, "Scenario is not added");
 			}
-			
+
 			if (inputDataList.get(row).data.get(0).id == outputDataList.get(row).data.get(0).id) {
 				fieldResult = "Pass";
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).data.get(0).id,
 						outputDataList.get(row).data.get(0).id, fieldResult);
 			} else {
-				fieldResult = "Fail";recordResult = "Fail";
+				fieldResult = "Fail";
+				recordResult = "Fail";
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).data.get(0).id,
 						outputDataList.get(row).data.get(0).id, fieldResult);
 			}
-			
-			DataFromExcel.FinalStatusCell(rows,cells,cellCount,recordResult);
-			//Utilities.addStepResult(fieldResult, scenario, logger);
-			
+
+			DataFromExcel.FinalStatusCell(rows, cells, cellCount, recordResult);
+			// Utilities.addStepResult(fieldResult, scenario, logger);
+
 		}
 
-		
 	}
-	
-	
-	public void WriteOutputEmployessSupportValidData(List<DataPerPage> inputDataList, List<DataPerPage> outputDataList, ExtentTest logger,XSSFWorkbook workbook) {
+
+	private void WriteOutputEmployessSupportValidData(List<DataPerPage> inputDataList, List<DataPerPage> outputDataList,
+			ExtentTest logger, XSSFWorkbook workbook) {
 
 		// Blank workbook
-		//XSSFWorkbook workbook = new XSSFWorkbook();
+		// XSSFWorkbook workbook = new XSSFWorkbook();
 		// Create a blank sheet
 		XSSFSheet sheet = workbook.createSheet("supportDetails");
 
@@ -320,35 +328,35 @@ public class EmployeeHelper {
 			System.out.println("Rows Count: " + row);
 			rows = sheet.createRow(row + 1);
 			String scenario = "Scenario is not defined";
-			int cellCount = 0;fieldResult = "Pass";recordResult = "Pass";
+			int cellCount = 0;
+			fieldResult = "Pass";
+			recordResult = "Pass";
 
 			if (!inputDataList.get(row).support.scenario.isEmpty()) {
 				scenario = inputDataList.get(row).scenario;
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).support.scenario);				
+				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).support.scenario);
 			} else {
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, "Scenario is not added");
 			}
-			
-			if (inputDataList.get(row).support.url.equals(outputDataList.get(row).support.url) ) {
+
+			if (inputDataList.get(row).support.url.equals(outputDataList.get(row).support.url)) {
 				fieldResult = "Pass";
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).support.url,
 						outputDataList.get(row).support.url, fieldResult);
 			} else {
-				fieldResult = "Fail";recordResult = "Fail";
+				fieldResult = "Fail";
+				recordResult = "Fail";
 				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).support.url,
 						outputDataList.get(row).support.url, fieldResult);
 			}
-			
-			DataFromExcel.FinalStatusCell(rows,cells,cellCount,recordResult);
-			//Utilities.addStepResult(fieldResult, scenario, logger);
-			
+
+			DataFromExcel.FinalStatusCell(rows, cells, cellCount, recordResult);
+			// Utilities.addStepResult(fieldResult, scenario, logger);
+
 		}
 
-		
 	}
 
-
-	
 	private ArrayList<String> GetHeadersListPageDetails() {
 		ArrayList<String> headersList = new ArrayList<String>();
 		headersList.add("Scenario");
@@ -358,7 +366,7 @@ public class EmployeeHelper {
 		headersList.add("Final Result");
 		return headersList;
 	}
-	
+
 	private ArrayList<String> GetHeadersListEmployeesDetails() {
 		ArrayList<String> headersList = new ArrayList<String>();
 		headersList.add("Scenario");
@@ -368,7 +376,7 @@ public class EmployeeHelper {
 		headersList.add("Final Result");
 		return headersList;
 	}
-	
+
 	private ArrayList<String> GetHeadersListSupportDetails() {
 		ArrayList<String> headersList = new ArrayList<String>();
 		headersList.add("Scenario");
@@ -378,7 +386,7 @@ public class EmployeeHelper {
 		headersList.add("Final Result");
 		return headersList;
 	}
-	
+
 	private ArrayList<String> GetHeadersList() {
 		ArrayList<String> headersList = new ArrayList<String>();
 		headersList.add("Actual Name");
@@ -388,35 +396,5 @@ public class EmployeeHelper {
 		headersList.add("Expected Job");
 		headersList.add("Result Job");
 		return headersList;
-	}
-
-	public String GetEmployeeToJson() {
-		Employee data = GetEmployeeObject();
-		Gson gson = new Gson();
-		String jsonString = gson.toJson(data, Employee.class);
-		return jsonString;
-
-	}
-
-	public String GetEmployeeToJson(Employee data) {
-		// EmployeeData data = GetEmployeeObject();
-		Gson gson = new Gson();
-		String jsonString = gson.toJson(data, Employee.class);
-		return jsonString;
-
-	}
-
-	public Employee GetJsonToEmployee(String jsonString) {
-		Gson gson = new Gson();
-		Employee data = gson.fromJson(jsonString, Employee.class);
-		return data;
-
-	}
-
-	public Employee GetEmployeeObject() {
-		Employee data = new Employee();
-		data.name = "Sachin Adlakha";
-		data.job = "QA Manager";
-		return data;
 	}
 }
