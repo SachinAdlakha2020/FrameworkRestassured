@@ -15,12 +15,76 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.google.gson.Gson;
 
+import Repository.DataPerPage;
 import Repository.Employee;
+import Repository.DataPerPage.Support;
+import Repository.DataPerPage.UserData;
 import Utility.DataFromExcel;
 import Utility.Utilities;
 
 public class EmployeeHelper {
 
+	public List<DataPerPage> GetPerDataList(){
+		List<DataPerPage> listData = null;
+		ArrayList<UserData> userListData=null;
+		Support support=null;
+		try {
+			// Access the file
+			String filePath = "E:\\Automation\\TestData\\Input\\EmployeesListInput.xlsx";
+			// read the data in two dimentioanl object
+			Object[][] objPageDetail = DataFromExcel.ReadDataFromExcel(filePath,"pageDetails");
+			Object[][] objEmployeeDetail = DataFromExcel.ReadDataFromExcel(filePath,"employessDetails");
+			Object[][] objSupportDetail = DataFromExcel.ReadDataFromExcel(filePath,"support");
+
+			// Assign the data in Object
+			listData = new ArrayList<DataPerPage>();
+			userListData = new ArrayList<UserData>();
+			
+			int row = 0;
+			int innerRow1=0;
+			int innerRow2=0;
+			double var=0.0;
+			for (Object[] objects : objPageDetail) {
+				DataPerPage data = new DataPerPage();
+				data.scenario = (String) objPageDetail[row][0];
+				var = (Double) objPageDetail[row][1];
+				data.page = (int) var;
+				var = (Double) objPageDetail[row][2];
+				data.per_page = (int) var;
+				var = (Double) objPageDetail[row][3];
+				data.total = (int) var;
+				var = (Double) objPageDetail[row][4];
+				data.total_pages = (int) var;
+				for (Object[] objects1 : objEmployeeDetail){
+					DataPerPage.UserData userData = data.new UserData();
+					userData.scenario = (String) objEmployeeDetail[innerRow1][0];
+					var = (Double) objEmployeeDetail[innerRow1][1];
+					userData.id= (int) var;
+					userData.email = (String) objEmployeeDetail[innerRow1][2];
+					userData.first_name = (String) objEmployeeDetail[innerRow1][3];
+					userData.last_name = (String) objEmployeeDetail[innerRow1][4];
+					userData.avatar = (String) objEmployeeDetail[innerRow1][5];					
+					userListData.add(userData);
+					++innerRow1;
+				}
+				for (Object[] objects1 : objSupportDetail){
+					support = data.new Support();
+					support.scenario = (String) objSupportDetail[innerRow2][0];
+					support.url = (String) objSupportDetail[innerRow2][1];
+					support.text = (String) objSupportDetail[innerRow2][2];
+				}
+				
+				data.data=userListData;
+				data.support=support;
+				listData.add(data);
+				++row;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listData;
+		
+	}
 	public List<Employee> GetEmployeeFromExcel() throws IOException {
 
 		List<Employee> listData = null;
@@ -28,7 +92,7 @@ public class EmployeeHelper {
 			// Access the file
 			String filePath = "E:\\Automation\\TestData\\Input\\TestDataInExcel.xlsx";
 			// read the data in two dimentioanl object
-			Object[][] obj = DataFromExcel.ReadDataFromExcel(filePath);
+			Object[][] obj = DataFromExcel.ReadDataFromExcel(filePath,"Sheet1");
 
 			// Assign the data in Object
 			listData = new ArrayList<Employee>();

@@ -34,7 +34,7 @@ public class RegisterEmployeeHelper {
 			// Access the file
 			String filePath = "E:\\Automation\\TestData\\Input\\RegisterEmployeeInput.xlsx";
 			// read the data in two dimentioanl object
-			Object[][] obj = DataFromExcel.ReadDataFromExcel(filePath);
+			Object[][] obj = DataFromExcel.ReadDataFromExcel(filePath,"Sheet1");
 
 			// Assign the data in Object
 			listData = new ArrayList<RegisterEmployee>();
@@ -64,7 +64,7 @@ public class RegisterEmployeeHelper {
 			// Access the file
 			String filePath = "E:\\Automation\\TestData\\Input\\RegisterEmployeeInvalidInputs.xlsx";
 			// read the data in two dimentioanl object
-			Object[][] obj = DataFromExcel.ReadDataFromExcel(filePath);
+			Object[][] obj = DataFromExcel.ReadDataFromExcel(filePath,"Sheet1");
 
 			// Assign the data in Object
 			listData = new ArrayList<RegisterEmployee>();

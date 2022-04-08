@@ -7,7 +7,8 @@ public class GsonHelper {
 
 	public static String ToJson(Object data) {
 		// EmployeeData data = GetEmployeeObject();
-		Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+		//Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+		Gson gson = new Gson();
 		String jsonString = gson.toJson(data, Object.class);
 		System.out.println("jsonString: " + jsonString);
 		return jsonString;

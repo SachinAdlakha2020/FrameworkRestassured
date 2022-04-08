@@ -18,7 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class DataFromExcel {
 
-	public static Object[][] ReadDataFromExcel(String filePath) throws IOException {
+	public static Object[][] ReadDataFromExcel(String filePath, String sheetName) throws IOException {
 
 		// FileInputStream fis = new
 		// FileInputStream("C:\\Users\\Dell\\Downloads\\TestDataInExcel.xlsx");
@@ -27,7 +27,7 @@ public class DataFromExcel {
 		int noOfSheets = workBook.getNumberOfSheets();
 		System.out.println("# of sheets: " + noOfSheets);
 
-		XSSFSheet sheet = workBook.getSheet("Sheet1");
+		XSSFSheet sheet = workBook.getSheet(sheetName);
 		int r1 = sheet.getLastRowNum();
 		System.out.println("# of rows: " + r1);
 		XSSFRow firstrow = sheet.getRow(0);
@@ -126,6 +126,7 @@ public class DataFromExcel {
 		cells.setCellValue(recordResult);		
 		++cellCount;
 	}
+
 	private static void AddCellColor(Cell cells, String result) {
 		CellStyle style = cells.getCellStyle();
 		style =cells.getSheet().getWorkbook().createCellStyle();
