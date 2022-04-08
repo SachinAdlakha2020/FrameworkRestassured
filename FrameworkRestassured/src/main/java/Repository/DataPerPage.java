@@ -17,9 +17,9 @@ public class DataPerPage {
 	public int total;
 	@Expose(serialize = false, deserialize = true)
 	public int total_pages;
-	@Expose(serialize = false, deserialize = false)
+	@Expose(serialize = false, deserialize = true)
 	public ArrayList<UserData> data;
-	@Expose(serialize = false, deserialize = false)
+	@Expose(serialize = false, deserialize = true)
 	public Support support;
 	
 	public class UserData {

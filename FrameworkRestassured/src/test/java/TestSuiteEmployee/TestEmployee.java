@@ -32,6 +32,7 @@ import Repository.DataPerPage;
 import Repository.DataPerPage.UserData;
 import Repository.Employee;
 import Utility.DataFromExcel;
+import Utility.GsonHelper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.internal.mapping.GsonMapper;
@@ -95,6 +96,15 @@ public class TestEmployee extends BaseClass {
 		
 		List<UserData> data= inputDataList.get(0).data;
 		System.out.println(data.get(0).id);
+		DataPerPage outputData =new DataPerPage();
+		Response responseData = RestAPiHelper.GetResponse("users?page=2");
+		List<DataPerPage> outputDataList = new ArrayList<DataPerPage>();
+		outputData =(DataPerPage) GsonHelper.ToObject(responseData.asString(), outputData);
+		outputDataList.add(outputData);
+		
+		System.out.println(outputData.per_page);
+		System.out.println(outputData.data.get(0).id);
+		System.out.println(outputData.support.url);
 		
 		/*int inputDataRowsCount = inputDataList.size();
 		List<Employee> outputDataList = new ArrayList<Employee>();
@@ -112,9 +122,9 @@ public class TestEmployee extends BaseClass {
 			outputDataList.add(outputData);
 		}
 		
-		//write the input and output with comparision in output file
-		employeeHelper.WriteOutput(inputDataList, outputDataList);*/
-
+		//write the input and output with comparision in output file*/
+		//employeeHelper.WriteOutput(inputDataList, outputDataList);
+		employeeHelper.WriteOutputDataPerPageValidData(inputDataList, outputDataList, null);
 	}
 
 
