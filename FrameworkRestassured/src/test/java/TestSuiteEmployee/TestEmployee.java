@@ -45,38 +45,7 @@ import DataHelper.EmployeeHelper;
 public class TestEmployee extends BaseClass {
 
 
-	@Test (enabled=false)
-	public void TestEmployeeWithValidData() throws URISyntaxException, IOException {
-
-		System.out.println("PostUserUsingObject");
-		//Create the header for request
-		Map<String, String> headers = new Hashtable<>();
-		headers.put("Content-Type", "application/json");
-		headers.put("Accept", "application/json");
-		EmployeeHelper employeeHelper = new EmployeeHelper();
-		//Read the test data from excel and convert into the List of Employee Object
-		List<Employee> inputDataList = employeeHelper.GetEmployeeFromExcel();
-		
-		int inputDataRowsCount = inputDataList.size();
-		List<Employee> outputDataList = new ArrayList<Employee>();
-		Employee outputData = null;
-		//Iterate through all the rows
-		for (int i = 0; i < inputDataRowsCount; i++) {
-			//Serialize the employee object to json
-			String jsonRequestData = employeeHelper.GetEmployeeToJson(inputDataList.get(i));
-			System.out.println("Json Request: " + jsonRequestData);
-			//Call the api and read the response data
-			Response responseData = RestAPiHelper.PostRequest("users", headers, jsonRequestData);
-			//De-Serialize the json into the employee object
-			outputData = employeeHelper.GetJsonToEmployee(responseData.asString());
-			//Add the employee data in list 
-			outputDataList.add(outputData);
-		}
-		
-		//write the input and output with comparision in output file
-		employeeHelper.WriteOutput(inputDataList, outputDataList);
-
-	}
+	
 	
 	@Test (enabled=true)
 	public void TestListPerPage() throws URISyntaxException, IOException {
