@@ -70,30 +70,7 @@ public class TestEmployee extends BaseClass {
 		List<DataPerPage> outputDataList = new ArrayList<DataPerPage>();
 		outputData =(DataPerPage) GsonHelper.ToObject(responseData.asString(), outputData);
 		outputDataList.add(outputData);
-		
-		System.out.println(outputData.per_page);
-		System.out.println(outputData.data.get(0).id);
-		System.out.println(outputData.support.url);
-		
-		/*int inputDataRowsCount = inputDataList.size();
-		List<Employee> outputDataList = new ArrayList<Employee>();
-		Employee outputData = null;
-		//Iterate through all the rows
-		for (int i = 0; i < inputDataRowsCount; i++) {
-			//Serialize the employee object to json
-			String jsonRequestData = employeeHelper.GetEmployeeToJson(inputDataList.get(i));
-			System.out.println("Json Request: " + jsonRequestData);
-			//Call the api and read the response data
-			Response responseData = RestAPiHelper.PostRequest("users", headers, jsonRequestData);
-			//De-Serialize the json into the employee object
-			outputData = employeeHelper.GetJsonToEmployee(responseData.asString());
-			//Add the employee data in list 
-			outputDataList.add(outputData);
-		}
-		
-		//write the input and output with comparision in output file*/
-		//employeeHelper.WriteOutput(inputDataList, outputDataList);
-		employeeHelper.WriteOutputDataPerPageValidData(inputDataList, outputDataList, null);
+		employeeHelper.WriteOutputDataPerPageValidDataTest(inputDataList, outputDataList, null);
 	}
 
 

@@ -83,6 +83,15 @@ public class DataFromExcel extends BaseClass{
 		++cellCount;
 		return cellCount;
 	}
+	
+	public static int AddCellNoComparision(Row rows, Cell cells, int cellCount, String inputValue, String defaultValue) {
+		// System.out.println("name: " + re{}sult);
+		if (inputValue == null || inputValue=="") {inputValue=defaultValue;}
+		cells = rows.createCell(cellCount);
+		cells.setCellValue(inputValue);
+		++cellCount;
+		return cellCount;
+	}
 
 	public static int AddCells(Row rows, Cell cells, int cellCount, String inputValue, String outputValue,
 			String result) {

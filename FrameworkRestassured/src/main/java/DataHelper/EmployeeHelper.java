@@ -258,59 +258,20 @@ public class EmployeeHelper extends BaseClass{
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		// Create a blank sheet
 		XSSFSheet sheet = workbook.createSheet("pageDetails");
-
-		//String fieldResult = "Pass";		
-		Row rows = null;
-
-		Cell cells = null;
+		Row rows = null; Cell cells = null;
 		int rowsSize = inputDataList.size();
-
 		if (rowsSize > 0) {
 			rows = sheet.createRow(0);
 			DataFromExcel.AddHeader(rows, cells, 0, GetHeadersListPageDetails());
 		}
 
 		for (int row = 0; row < rowsSize; row++) {
-
-			System.out.println("Rows Count: " + row);
 			rows = sheet.createRow(row + 1);
-			String scenario = "Scenario is not defined";
 			int cellCount = 0;
-			fieldResult = "Pass";
-			
-
-			if (!inputDataList.get(row).scenario.isEmpty()) {
-				scenario = inputDataList.get(row).scenario;
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).scenario);
-				System.out.println("Cells Count: " + cellCount);
-			} else {
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, "Scenario is not added");
-				System.out.println("Cells Count: " + cellCount);
-			}
-
-			/*if (inputDataList.get(row).page == outputDataList.get(row).page) {
-				fieldResult = "Pass";
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).page,
-						outputDataList.get(row).page, fieldResult);
-				System.out.println("Cells Count: " + cellCount);
-			} else {
-				fieldResult = "Fail";
-				recordResult = "Fail";
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).page,
-						outputDataList.get(row).page, fieldResult);
-				System.out.println("Cells Count: " + cellCount);
-			}*/
-			/*
-			 * cellCount = DataFromExcel.AddCellsWithResult(rows, cells, cellCount,
-			 * inputDataList.get(row).page, outputDataList.get(row).page);
-			 */
-			
+			cellCount = DataFromExcel.AddCellNoComparision(rows, cells, cellCount, inputDataList.get(row).scenario,"Scenario is not added");
 			cellCount = DataFromExcel.AddCellsWithResult(rows, cells, cellCount, inputDataList.get(row).page,
-					55);
-
-			
+					outputDataList.get(row).page);
 			DataFromExcel.FinalStatusCell(rows, cells, cellCount,recordResult);
-			// Utilities.addStepResult(fieldResult, scenario, logger);
 			WriteOutputEmployessDetailsValidData(inputDataList, outputDataList, logger, workbook);
 			WriteOutputEmployessSupportValidData(inputDataList, outputDataList, logger, workbook);
 		}
@@ -331,17 +292,8 @@ public class EmployeeHelper extends BaseClass{
 	}
 	private void WriteOutputEmployessDetailsValidData(List<DataPerPage> inputDataList, List<DataPerPage> outputDataList,
 			ExtentTest logger, XSSFWorkbook workbook) {
-
-		// Blank workbook
-		// XSSFWorkbook workbook = new XSSFWorkbook();
-		// Create a blank sheet
 		XSSFSheet sheet = workbook.createSheet("employessDetails");
-
-		String fieldResult = "Pass";
-		String recordResult = "Pass";
-		Row rows = null;
-
-		Cell cells = null;
+		Row rows = null; Cell cells = null;
 		int rowsSize = inputDataList.size();
 
 		if (rowsSize > 0) {
@@ -350,52 +302,20 @@ public class EmployeeHelper extends BaseClass{
 		}
 
 		for (int row = 0; row < rowsSize; row++) {
-
-			System.out.println("Rows Count: " + row);
 			rows = sheet.createRow(row + 1);
-			String scenario = "Scenario is not defined";
 			int cellCount = 0;
-			fieldResult = "Pass";
-			recordResult = "Pass";
-
-			if (!inputDataList.get(row).data.get(0).scenario.isEmpty()) {
-				scenario = inputDataList.get(row).scenario;
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).data.get(0).scenario);
-			} else {
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, "Scenario is not added");
-			}
-
-			if (inputDataList.get(row).data.get(0).id == outputDataList.get(row).data.get(0).id) {
-				fieldResult = "Pass";
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).data.get(0).id,
-						outputDataList.get(row).data.get(0).id, fieldResult);
-			} else {
-				fieldResult = "Fail";
-				recordResult = "Fail";
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).data.get(0).id,
-						outputDataList.get(row).data.get(0).id, fieldResult);
-			}
-
+			cellCount = DataFromExcel.AddCellNoComparision(rows, cells, cellCount, inputDataList.get(row).scenario,"Scenario is not added");
+			cellCount = DataFromExcel.AddCellsWithResult(rows, cells, cellCount, inputDataList.get(row).data.get(0).id,
+					outputDataList.get(row).data.get(0).id);			
 			DataFromExcel.FinalStatusCell(rows, cells, cellCount, recordResult);
-			// Utilities.addStepResult(fieldResult, scenario, logger);
-
 		}
 
 	}
 
 	private void WriteOutputEmployessSupportValidData(List<DataPerPage> inputDataList, List<DataPerPage> outputDataList,
 			ExtentTest logger, XSSFWorkbook workbook) {
-
-		// Blank workbook
-		// XSSFWorkbook workbook = new XSSFWorkbook();
-		// Create a blank sheet
 		XSSFSheet sheet = workbook.createSheet("supportDetails");
-
-		String fieldResult = "Pass";
-		String recordResult = "Pass";
-		Row rows = null;
-
-		Cell cells = null;
+		Row rows = null; Cell cells = null;
 		int rowsSize = inputDataList.size();
 
 		if (rowsSize > 0) {
@@ -404,35 +324,12 @@ public class EmployeeHelper extends BaseClass{
 		}
 
 		for (int row = 0; row < rowsSize; row++) {
-
-			System.out.println("Rows Count: " + row);
 			rows = sheet.createRow(row + 1);
-			String scenario = "Scenario is not defined";
 			int cellCount = 0;
-			fieldResult = "Pass";
-			recordResult = "Pass";
-
-			if (!inputDataList.get(row).support.scenario.isEmpty()) {
-				scenario = inputDataList.get(row).scenario;
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).support.scenario);
-			} else {
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, "Scenario is not added");
-			}
-
-			if (inputDataList.get(row).support.url.equals(outputDataList.get(row).support.url)) {
-				fieldResult = "Pass";
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).support.url,
-						outputDataList.get(row).support.url, fieldResult);
-			} else {
-				fieldResult = "Fail";
-				recordResult = "Fail";
-				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).support.url,
-						outputDataList.get(row).support.url, fieldResult);
-			}
-
+			cellCount = DataFromExcel.AddCellNoComparision(rows, cells, cellCount, inputDataList.get(row).scenario,"Scenario is not added");
+			cellCount = DataFromExcel.AddCellsWithResult(rows, cells, cellCount, inputDataList.get(row).support.url,
+					outputDataList.get(row).support.url);
 			DataFromExcel.FinalStatusCell(rows, cells, cellCount, recordResult);
-			// Utilities.addStepResult(fieldResult, scenario, logger);
-
 		}
 
 	}
