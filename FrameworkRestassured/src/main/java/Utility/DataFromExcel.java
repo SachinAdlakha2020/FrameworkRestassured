@@ -1,5 +1,6 @@
 package Utility;
 
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,8 +16,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import Model.BaseClass;
 
-public class DataFromExcel {
+public class DataFromExcel extends BaseClass{
 
 	public static Object[][] ReadDataFromExcel(String filePath, String sheetName) throws IOException {
 
@@ -95,6 +97,34 @@ public class DataFromExcel {
 		++cellCount;
 		return cellCount;
 	}
+	
+	public static int AddCellsWithResult(Row rows, Cell cells, int cellCount, int inputValue, int outputValue) {
+		fieldResult="Pass";
+		if(inputValue!=outputValue) {fieldResult="Fail";recordResult = "Fail";}
+		cells = rows.createCell(cellCount);
+		cells.setCellValue(inputValue);
+		cells = rows.createCell(++cellCount);
+		cells.setCellValue(outputValue);
+		cells = rows.createCell(++cellCount);		
+		cells.setCellValue(fieldResult);
+		AddCellColor(cells,fieldResult);
+		++cellCount;
+		return cellCount;
+	}
+	
+	public static int AddCellsWithResult(Row rows, Cell cells, int cellCount, String inputValue, String outputValue) {
+		fieldResult="Pass";
+		if(!inputValue.equals(outputValue)) {fieldResult="Fail";recordResult = "Fail";}
+		cells = rows.createCell(cellCount);
+		cells.setCellValue(inputValue);
+		cells = rows.createCell(++cellCount);
+		cells.setCellValue(outputValue);
+		cells = rows.createCell(++cellCount);		
+		cells.setCellValue(fieldResult);
+		AddCellColor(cells,fieldResult);
+		++cellCount;
+		return cellCount;
+	}
 
 	public static int AddCells(Row rows, Cell cells, int cellCount, double inputValue, double outputValue,
 			String result) {
@@ -109,6 +139,7 @@ public class DataFromExcel {
 		++cellCount;
 		return cellCount;
 	}
+	
 
 	public static void AddHeader(Row rows, Cell cells, int cellCount, ArrayList<String> headersList) {
 
