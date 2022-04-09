@@ -16,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.google.gson.Gson;
 import com.relevantcodes.extentreports.ExtentTest;
 
+import Model.BaseClass;
 import Repository.DataPerPage;
 import Repository.Employee;
 import Repository.RegisterEmployee;
@@ -24,7 +25,7 @@ import Repository.DataPerPage.UserData;
 import Utility.DataFromExcel;
 import Utility.Utilities;
 
-public class EmployeeHelper {
+public class EmployeeHelper extends BaseClass{
 
 	public List<DataPerPage> GetPerDataList() {
 		List<DataPerPage> listData = null;
@@ -180,6 +181,7 @@ public class EmployeeHelper {
 	public void WriteOutputDataPerPageValidData(List<DataPerPage> inputDataList, List<DataPerPage> outputDataList,
 			ExtentTest logger) {
 
+		
 		// Blank workbook
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		// Create a blank sheet
@@ -249,6 +251,84 @@ public class EmployeeHelper {
 		}
 	}
 
+	public void WriteOutputDataPerPageValidDataTest(List<DataPerPage> inputDataList, List<DataPerPage> outputDataList,
+			ExtentTest logger) {
+
+		// Blank workbook
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		// Create a blank sheet
+		XSSFSheet sheet = workbook.createSheet("pageDetails");
+
+		//String fieldResult = "Pass";		
+		Row rows = null;
+
+		Cell cells = null;
+		int rowsSize = inputDataList.size();
+
+		if (rowsSize > 0) {
+			rows = sheet.createRow(0);
+			DataFromExcel.AddHeader(rows, cells, 0, GetHeadersListPageDetails());
+		}
+
+		for (int row = 0; row < rowsSize; row++) {
+
+			System.out.println("Rows Count: " + row);
+			rows = sheet.createRow(row + 1);
+			String scenario = "Scenario is not defined";
+			int cellCount = 0;
+			fieldResult = "Pass";
+			
+
+			if (!inputDataList.get(row).scenario.isEmpty()) {
+				scenario = inputDataList.get(row).scenario;
+				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).scenario);
+				System.out.println("Cells Count: " + cellCount);
+			} else {
+				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, "Scenario is not added");
+				System.out.println("Cells Count: " + cellCount);
+			}
+
+			/*if (inputDataList.get(row).page == outputDataList.get(row).page) {
+				fieldResult = "Pass";
+				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).page,
+						outputDataList.get(row).page, fieldResult);
+				System.out.println("Cells Count: " + cellCount);
+			} else {
+				fieldResult = "Fail";
+				recordResult = "Fail";
+				cellCount = DataFromExcel.AddCells(rows, cells, cellCount, inputDataList.get(row).page,
+						outputDataList.get(row).page, fieldResult);
+				System.out.println("Cells Count: " + cellCount);
+			}*/
+			/*
+			 * cellCount = DataFromExcel.AddCellsWithResult(rows, cells, cellCount,
+			 * inputDataList.get(row).page, outputDataList.get(row).page);
+			 */
+			
+			cellCount = DataFromExcel.AddCellsWithResult(rows, cells, cellCount, inputDataList.get(row).page,
+					55);
+
+			
+			DataFromExcel.FinalStatusCell(rows, cells, cellCount,recordResult);
+			// Utilities.addStepResult(fieldResult, scenario, logger);
+			WriteOutputEmployessDetailsValidData(inputDataList, outputDataList, logger, workbook);
+			WriteOutputEmployessSupportValidData(inputDataList, outputDataList, logger, workbook);
+		}
+
+		try {
+			// Creating the unique file name with current date and time.
+
+			String fileName = fieldResult + "_DataPerPageResults_" + Utilities.GetCurrentDatetime() + ".xlsx";
+			String outputFilePath = "E:\\Automation\\TestData\\Output\\" + fileName;
+			// Write the workbook in file system
+			FileOutputStream out = new FileOutputStream(new File(outputFilePath));
+			workbook.write(out);
+			out.close();
+			System.out.println("Outputfile written successfully on disk.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	private void WriteOutputEmployessDetailsValidData(List<DataPerPage> inputDataList, List<DataPerPage> outputDataList,
 			ExtentTest logger, XSSFWorkbook workbook) {
 
