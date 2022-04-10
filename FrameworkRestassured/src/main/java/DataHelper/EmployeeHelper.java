@@ -255,19 +255,17 @@ public class EmployeeHelper extends BaseClass{
 			ExtentTest logger) {
 
 		// Blank workbook
-		XSSFWorkbook workbook = new XSSFWorkbook();
+		XSSFWorkbook workbook = DataFromExcel.CreateWorkbook();
 		// Create a blank sheet
-		XSSFSheet sheet = workbook.createSheet("pageDetails");
-		Row rows = null; Cell cells = null;
+		XSSFSheet sheet = DataFromExcel.CreateWorkSheet(workbook, "pageDetails"); 
+		Row rows = null; Cell cells = null;int cellCount = 0;
+		
+		rows=DataFromExcel.CreateRow(sheet, 0);
+		DataFromExcel.AddHeader(rows, cells, cellCount, GetHeadersListPageDetails());
 		int rowsSize = inputDataList.size();
-		if (rowsSize > 0) {
-			rows = sheet.createRow(0);
-			DataFromExcel.AddHeader(rows, cells, 0, GetHeadersListPageDetails());
-		}
-
 		for (int row = 0; row < rowsSize; row++) {
-			rows = sheet.createRow(row + 1);
-			int cellCount = 0;
+			rows = DataFromExcel.CreateRow(sheet,row + 1);
+			cellCount=0;
 			cellCount = DataFromExcel.AddCellNoComparision(rows, cells, cellCount, inputDataList.get(row).scenario,"Scenario is not added");
 			cellCount = DataFromExcel.AddCellsWithResult(rows, cells, cellCount, inputDataList.get(row).page,
 					outputDataList.get(row).page);
@@ -276,19 +274,7 @@ public class EmployeeHelper extends BaseClass{
 			WriteOutputEmployessSupportValidData(inputDataList, outputDataList, logger, workbook);
 		}
 
-		try {
-			// Creating the unique file name with current date and time.
-
-			String fileName = fieldResult + "_DataPerPageResults_" + Utilities.GetCurrentDatetime() + ".xlsx";
-			String outputFilePath = "E:\\Automation\\TestData\\Output\\" + fileName;
-			// Write the workbook in file system
-			FileOutputStream out = new FileOutputStream(new File(outputFilePath));
-			workbook.write(out);
-			out.close();
-			System.out.println("Outputfile written successfully on disk.");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		DataFromExcel.CreateOutputFile(fieldResult,"DataPerPageResults",workbook);
 	}
 	private void WriteOutputEmployessDetailsValidData(List<DataPerPage> inputDataList, List<DataPerPage> outputDataList,
 			ExtentTest logger, XSSFWorkbook workbook) {

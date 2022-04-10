@@ -1,8 +1,9 @@
 package Utility;
 
-
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,7 +19,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import Model.BaseClass;
 
-public class DataFromExcel extends BaseClass{
+public class DataFromExcel extends BaseClass {
 
 	public static Object[][] ReadDataFromExcel(String filePath, String sheetName) throws IOException {
 
@@ -83,10 +84,13 @@ public class DataFromExcel extends BaseClass{
 		++cellCount;
 		return cellCount;
 	}
-	
-	public static int AddCellNoComparision(Row rows, Cell cells, int cellCount, String inputValue, String defaultValue) {
+
+	public static int AddCellNoComparision(Row rows, Cell cells, int cellCount, String inputValue,
+			String defaultValue) {
 		// System.out.println("name: " + re{}sult);
-		if (inputValue == null || inputValue=="") {inputValue=defaultValue;}
+		if (inputValue == null || inputValue == "") {
+			inputValue = defaultValue;
+		}
 		cells = rows.createCell(cellCount);
 		cells.setCellValue(inputValue);
 		++cellCount;
@@ -102,35 +106,41 @@ public class DataFromExcel extends BaseClass{
 
 		cells = rows.createCell(++cellCount);
 		cells.setCellValue(result);
-		AddCellColor(cells,result);
+		AddCellColor(cells, result);
 		++cellCount;
 		return cellCount;
 	}
-	
+
 	public static int AddCellsWithResult(Row rows, Cell cells, int cellCount, int inputValue, int outputValue) {
-		fieldResult="Pass";
-		if(inputValue!=outputValue) {fieldResult="Fail";recordResult = "Fail";}
+		fieldResult = "Pass";
+		if (inputValue != outputValue) {
+			fieldResult = "Fail";
+			recordResult = "Fail";
+		}
 		cells = rows.createCell(cellCount);
 		cells.setCellValue(inputValue);
 		cells = rows.createCell(++cellCount);
 		cells.setCellValue(outputValue);
-		cells = rows.createCell(++cellCount);		
+		cells = rows.createCell(++cellCount);
 		cells.setCellValue(fieldResult);
-		AddCellColor(cells,fieldResult);
+		AddCellColor(cells, fieldResult);
 		++cellCount;
 		return cellCount;
 	}
-	
+
 	public static int AddCellsWithResult(Row rows, Cell cells, int cellCount, String inputValue, String outputValue) {
-		fieldResult="Pass";
-		if(!inputValue.equals(outputValue)) {fieldResult="Fail";recordResult = "Fail";}
+		fieldResult = "Pass";
+		if (!inputValue.equals(outputValue)) {
+			fieldResult = "Fail";
+			recordResult = "Fail";
+		}
 		cells = rows.createCell(cellCount);
 		cells.setCellValue(inputValue);
 		cells = rows.createCell(++cellCount);
 		cells.setCellValue(outputValue);
-		cells = rows.createCell(++cellCount);		
+		cells = rows.createCell(++cellCount);
 		cells.setCellValue(fieldResult);
-		AddCellColor(cells,fieldResult);
+		AddCellColor(cells, fieldResult);
 		++cellCount;
 		return cellCount;
 	}
@@ -143,12 +153,11 @@ public class DataFromExcel extends BaseClass{
 		cells = rows.createCell(++cellCount);
 		cells.setCellValue(outputValue);
 		cells = rows.createCell(++cellCount);
-		AddCellColor(cells,result);
-		cells.setCellValue(result);		
+		AddCellColor(cells, result);
+		cells.setCellValue(result);
 		++cellCount;
 		return cellCount;
 	}
-	
 
 	public static void AddHeader(Row rows, Cell cells, int cellCount, ArrayList<String> headersList) {
 
@@ -159,23 +168,53 @@ public class DataFromExcel extends BaseClass{
 			cells = rows.createCell(++cellCount);
 		}
 	}
-	
+
 	public static void FinalStatusCell(Row rows, Cell cells, int cellCount, String recordResult) {
 		cells = rows.createCell(cellCount);
-		AddCellColor(cells,recordResult);
-		cells.setCellValue(recordResult);		
+		AddCellColor(cells, recordResult);
+		cells.setCellValue(recordResult);
 		++cellCount;
 	}
 
 	private static void AddCellColor(Cell cells, String result) {
 		CellStyle style = cells.getCellStyle();
-		style =cells.getSheet().getWorkbook().createCellStyle();
+		style = cells.getSheet().getWorkbook().createCellStyle();
 		if (result.equalsIgnoreCase("Pass")) {
-			style.setFillForegroundColor(IndexedColors.GREEN.getIndex());			
+			style.setFillForegroundColor(IndexedColors.GREEN.getIndex());
 		} else {
-			style.setFillForegroundColor(IndexedColors.RED.getIndex());			
+			style.setFillForegroundColor(IndexedColors.RED.getIndex());
 		}
 		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		cells.setCellStyle(style);
+	}
+
+	public static void CreateOutputFile(String outputResult,String fileName,XSSFWorkbook workbook) {
+		try {
+			// Creating the unique file name with current date and time.
+
+			String fullFileName = fieldResult + "_" + fileName+ "_" + Utilities.GetCurrentDatetime() + ".xlsx";
+			String outputFilePath = "E:\\Automation\\TestData\\Output\\" + fullFileName;
+			// Write the workbook in file system
+			FileOutputStream out = new FileOutputStream(new File(outputFilePath));
+			workbook.write(out);
+			out.close();
+			System.out.println("Outputfile written successfully on disk.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static XSSFWorkbook CreateWorkbook() {
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		return workbook;
+	}
+	
+	public static XSSFSheet CreateWorkSheet(XSSFWorkbook workbook, String sheetName) {
+		XSSFSheet sheet = workbook.createSheet(sheetName);
+		return sheet;
+	}
+	
+	public static Row CreateRow(XSSFSheet sheet, int index) {
+		return sheet.createRow(index);
 	}
 }
