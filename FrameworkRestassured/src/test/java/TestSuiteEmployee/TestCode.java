@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import javax.print.attribute.HashAttributeSet;
 import javax.xml.crypto.Data;
@@ -25,6 +26,8 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import Model.BaseClass;
@@ -32,21 +35,43 @@ import Model.RestAPiHelper;
 import Repository.DataPerPage;
 
 import Repository.Employee;
+import Repository.Order;
+import Repository.Order.Note;
+
 import Repository.RegisterEmployee;
 import Utility.DataFromExcel;
 import Utility.GsonHelper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.internal.mapping.GsonMapper;
+import io.restassured.internal.mapping.Jackson1Mapper;
 import io.restassured.response.Response;
+import mockService.WireMockTest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.MappingBuilder;
+import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
+import com.github.tomakehurst.wiremock.client.ScenarioMappingBuilder;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.common.Metadata;
+import com.github.tomakehurst.wiremock.common.Metadata.Builder;
+import com.github.tomakehurst.wiremock.extension.Parameters;
+import com.github.tomakehurst.wiremock.http.Request;
+import com.github.tomakehurst.wiremock.http.trafficlistener.WiremockNetworkTrafficListener;
+import com.github.tomakehurst.wiremock.matching.ContentPattern;
+import com.github.tomakehurst.wiremock.matching.MultipartValuePatternBuilder;
+import com.github.tomakehurst.wiremock.matching.StringValuePattern;
+import com.github.tomakehurst.wiremock.matching.ValueMatcher;
+import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.relevantcodes.extentreports.LogStatus;
 
 import DataHelper.EmployeeHelper;
 
-public class TestCode {
+public class TestCode extends WireMockTest {
 
 	@Test(enabled = false)
 	public void PostUserUsingStringJson() throws URISyntaxException {
@@ -126,7 +151,7 @@ public class TestCode {
 		Reports.logger.log(LogStatus.PASS, "Test Step 3");
 	}
 
-	@Test
+	@Test(enabled = false)
 	private void TestDataObject() {
 		DataPerPage dataPerPage = new DataPerPage();
 		dataPerPage.page = 2;
@@ -164,5 +189,37 @@ public class TestCode {
 
 		GsonHelper.ToJson(dataPerPage);
 
+	}
+	
+	@Test(enabled = false)
+	private void TestXml() throws JsonProcessingException {
+		XmlMapper mapper = new XmlMapper();
+		Order order =new Order();
+		order.ignoreOrdering="Y";
+		order.orderHeaderKey=(float) 480989081;
+		
+		ArrayList<Note> noteList= new ArrayList<Note>();
+		Note notes=order.new Note();
+		notes.noteText= "Added Notes";
+		notes.operation ="Added Operation";
+		noteList.add(notes);
+		order.Note=noteList;
+		
+		
+		String xmlString= mapper.writeValueAsString(order);
+		
+		System.out.println(xmlString);
+		
+	}
+	
+	@Test(enabled = true)
+	public void getMockGetRequest() {
+		System.out.println("i am here");
+		WireMockTest.startServer();
+		WireMockTest.getOrder();
+		Response response = RestAssured.given().accept(ContentType.XML).when().get("http://localhost:8080/orders");
+		System.out.println(response.getStatusCode());	
+		System.out.println(response.asString());
+		WireMockTest.stopServer();
 	}
 }
