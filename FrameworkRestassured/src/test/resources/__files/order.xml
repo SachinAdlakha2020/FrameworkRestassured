@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Order IgnoreOrdering="Y" OrderHeaderKey="202203071337555773057158">
+    <Notes>
+        <Note NoteText="Test debit memo-1" Operation="Create"/>
+    </Notes>
+</Order>
