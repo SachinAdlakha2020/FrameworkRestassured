@@ -15,8 +15,12 @@ public class BaseClass {
 	
 	@BeforeClass
 	public static void SetUp() {
-		RestAssured.baseURI ="https://reqres.in/";
-		RestAssured.basePath ="api/";		
+		//RestAssured.baseURI ="https://reqres.in/";
+		//RestAssured.basePath ="api/";	
+		RestAssured.baseURI ="https://reqbin.com/";
+		RestAssured.basePath ="echo";
+		
+		
 		
 	}
 

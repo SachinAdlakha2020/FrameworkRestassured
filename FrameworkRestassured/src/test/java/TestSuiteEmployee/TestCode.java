@@ -26,6 +26,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -35,9 +36,12 @@ import Model.RestAPiHelper;
 import Repository.DataPerPage;
 
 import Repository.Employee;
+import Repository.LoginRequest;
+import Repository.LoginResponse;
 import Repository.Order;
 import Repository.Order.Note;
-
+import Repository.OrderFailResponse;
+import Repository.OrderFailResponse.Errors;
 import Repository.RegisterEmployee;
 import Utility.DataFromExcel;
 import Utility.GsonHelper;
@@ -49,6 +53,7 @@ import io.restassured.response.Response;
 import mockService.WireMockTest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
@@ -192,34 +197,93 @@ public class TestCode extends WireMockTest {
 	}
 	
 	@Test(enabled = false)
-	private void TestXml() throws JsonProcessingException {
+	private void TestOrderXml() throws JsonProcessingException {
 		XmlMapper mapper = new XmlMapper();
 		Order order =new Order();
 		order.ignoreOrdering="Y";
 		order.orderHeaderKey=(float) 480989081;
 		
 		ArrayList<Note> noteList= new ArrayList<Note>();
-		Note notes=order.new Note();
+		Note notes=new Note();
 		notes.noteText= "Added Notes";
 		notes.operation ="Added Operation";
 		noteList.add(notes);
-		order.Note=noteList;
+		order.Note=noteList;		
+		String xmlString= mapper.writeValueAsString(order);		
+		System.out.println(xmlString);		
+	}
+	
+	@Test(enabled = false)
+	private void TestOrderFailResponseXml() throws JsonProcessingException {
+		XmlMapper mapper = new XmlMapper();
+		OrderFailResponse orderFail =new OrderFailResponse();
+		orderFail.orderHeaderKey=(float) 480989081;
 		
+		ArrayList<Errors> errorList= new ArrayList<Errors>();
+		Errors error=new Errors();
+		error.message= "Order is not get created";
 		
-		String xmlString= mapper.writeValueAsString(order);
-		
-		System.out.println(xmlString);
-		
+		errorList.add(error);
+		orderFail.errorList=errorList;
+		String xmlString= mapper.writeValueAsString(orderFail);		
+		System.out.println(xmlString);		
 	}
 	
 	@Test(enabled = true)
-	public void getMockGetRequest() {
-		System.out.println("i am here");
-		WireMockTest.startServer();
-		WireMockTest.getOrder();
-		Response response = RestAssured.given().accept(ContentType.XML).when().get("http://localhost:8080/orders");
+	private void TestLoginRequestXml() throws JsonProcessingException {
+		XmlMapper mapper = new XmlMapper();
+		LoginRequest loginRequest=new LoginRequest();
+		loginRequest.login ="loginText";
+		loginRequest.password ="loginPassword";
+		
+		String xmlString= mapper.writeValueAsString(loginRequest);		
+		System.out.println(xmlString);	
+		LoginRequest loginRequestDe= mapper.readValue(xmlString, LoginRequest.class);
+		System.out.println(loginRequestDe.login);
+	}
+	
+	@Test(enabled = true)
+	private void TestLoginResponeXml() throws JsonProcessingException {
+		XmlMapper mapper = new XmlMapper();
+		LoginResponse loginResponse=new LoginResponse();
+		loginResponse.responseCode =100;
+		loginResponse.responseMessage ="Response Message";
+		
+		String xmlString= mapper.writeValueAsString(loginResponse);		
+		System.out.println(xmlString);		
+	}
+	
+	@Test(enabled = false)
+	public void getMockCreateOrderSuccessTest() throws JsonMappingException, JsonProcessingException {
+		System.out.println("i am getMockCreateOrderSuccessTest()");
+		
+		WireMockTest.getOrderSuccess();
+		Response response = RestAssured.given().accept(ContentType.XML).when().get("/created");
+		XmlMapper mapper = new XmlMapper();
+		Order order=mapper.readValue(response.asString(), Order.class);		
+		Assert.assertEquals(order.Note.get(0).noteText, "Test debit memo-1");
+		System.out.println(order.orderHeaderKey);
+		System.out.println(order.Note.get(0).noteText);
 		System.out.println(response.getStatusCode());	
 		System.out.println(response.asString());
-		WireMockTest.stopServer();
+		
 	}
+	
+	@Test(enabled = false)
+	public void getMockUpdateOrderFailureTest() throws JsonMappingException, JsonProcessingException {
+		System.out.println("i am getMockUpdateOrderFailureTest()");
+		
+		WireMockTest.getOrderFailure();
+		Response response = RestAssured.given().accept(ContentType.XML).when().get("/updated");
+		XmlMapper mapper = new XmlMapper();
+		OrderFailResponse orderFailResponse=mapper.readValue(response.asString(), OrderFailResponse.class);		
+		Assert.assertEquals(orderFailResponse.errorList.get(0).message, "Order is not get created");
+		System.out.println(orderFailResponse.orderHeaderKey);
+		System.out.println(response.getStatusCode());	
+		System.out.println(response.asString());
+		
+	}
+	
+
+	
 }

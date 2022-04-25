@@ -52,6 +52,16 @@ public class RestAPiHelper {
 		System.out.println(response.statusCode());
 		return response;
 	}
+	
+	public static Response PostRequest1(String UriPath, Map<String, String> headers, String content)
+			throws URISyntaxException {
+
+		String Url = RestAssured.baseURI + RestAssured.basePath + UriPath;
+		System.out.println(Url);
+		Response response = RestAssured.given().log().all().headers(headers).and()
+				.body(content).when().post(new URI(Url));
+		return response;
+	}
 
 	public static Response PostRequestAsObject(String UriPath, Map<String, String> headers, Object object)
 			throws URISyntaxException {
