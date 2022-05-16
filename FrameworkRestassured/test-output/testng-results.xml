@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
+<testng-results ignored="4" total="5" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2022-04-04T16:48:27 IST" name="Default suite" finished-at="2022-04-04T16:48:32 IST" duration-ms="4851">
+  <suite started-at="2022-04-21T19:20:24 IST" name="Default suite" finished-at="2022-04-21T19:20:27 IST" duration-ms="2950">
     <groups>
     </groups>
-    <test started-at="2022-04-04T16:48:27 IST" name="Default test" finished-at="2022-04-04T16:48:32 IST" duration-ms="4851">
-      <class name="TestSuiteEmployee.TestRegisterEmployee">
-        <test-method is-config="true" signature="SetUp()[pri:0, instance:TestSuiteEmployee.TestRegisterEmployee@654f0d9c]" started-at="2022-04-04T16:48:27 IST" name="SetUp" finished-at="2022-04-04T16:48:28 IST" duration-ms="536" status="PASS">
+    <test started-at="2022-04-21T19:20:24 IST" name="Default test" finished-at="2022-04-21T19:20:27 IST" duration-ms="2950">
+      <class name="TestSuiteEmployee.LoginTest">
+        <test-method is-config="true" signature="startServer()[pri:0, instance:TestSuiteEmployee.LoginTest@69653e16]" started-at="2022-04-21T19:20:24 IST" name="startServer" finished-at="2022-04-21T19:20:24 IST" duration-ms="77" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- SetUp -->
-        <test-method signature="TestRegisterEmployeeWithInValidData()[pri:0, instance:TestSuiteEmployee.TestRegisterEmployee@654f0d9c]" started-at="2022-04-04T16:48:28 IST" name="TestRegisterEmployeeWithInValidData" finished-at="2022-04-04T16:48:32 IST" duration-ms="3673" status="PASS">
+        </test-method> <!-- startServer -->
+        <test-method signature="ValidLoginWithMockTestSample02()[pri:0, instance:TestSuiteEmployee.LoginTest@69653e16]" started-at="2022-04-21T19:20:24 IST" name="ValidLoginWithMockTestSample02" finished-at="2022-04-21T19:20:27 IST" duration-ms="2837" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- TestRegisterEmployeeWithInValidData -->
-        <test-method signature="TestRegisterEmployeeWithValidData()[pri:0, instance:TestSuiteEmployee.TestRegisterEmployee@654f0d9c]" started-at="2022-04-04T16:48:32 IST" name="TestRegisterEmployeeWithValidData" finished-at="2022-04-04T16:48:32 IST" duration-ms="610" status="PASS">
+        </test-method> <!-- ValidLoginWithMockTestSample02 -->
+        <test-method is-config="true" signature="stopServer()[pri:0, instance:TestSuiteEmployee.LoginTest@69653e16]" started-at="2022-04-21T19:20:27 IST" name="stopServer" finished-at="2022-04-21T19:20:27 IST" duration-ms="2" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- TestRegisterEmployeeWithValidData -->
-      </class> <!-- TestSuiteEmployee.TestRegisterEmployee -->
+        </test-method> <!-- stopServer -->
+      </class> <!-- TestSuiteEmployee.LoginTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>
